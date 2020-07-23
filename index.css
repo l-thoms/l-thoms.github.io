@@ -1,0 +1,63 @@
+.res
+{
+	text-align: left;
+	position:relative;
+	display: inline-block;
+	margin: 0 auto;
+	background:rgba(240, 240, 240, 0.75);
+	box-shadow:2px 2px 18px 0px rgba(0,0,0,0.3);
+	border-radius: 2px;
+	padding: 12px;
+	overflow:hidden;
+	max-width: 95%;
+}
+.res::before
+{
+	content:'';
+	position:absolute;
+	filter:blur(12px) saturate(2);
+	z-index: -2;
+	overflow:visible;
+	animation-name:mix-before;
+	animation-duration: 0.5s;
+	animation-play-state:paused;
+}
+.res::after
+{
+	background-repeat:repeat;
+	background-attachment:fixed;
+	content:'';
+	position:absolute;
+	top:0;right:0;bottom:0;left:0;
+	background: url(./Noise);
+	filter: opacity(0.08);
+	z-index: -1;
+	animation-name:mix-after;
+	animation-duration: 0.5s;
+	animation-play-state: paused;
+}
+@keyframes mix-res
+{
+	0% { top:48px; background:rgba(240, 240, 240, 0	);box-shadow:2px 2px 18px 0px rgba(0,0,0,0);}
+	100%{top:0px;  background:rgba(240, 240, 240, 0.75);box-shadow:2px 2px 18px 0px rgba(0,0,0,0.3);}
+}
+@keyframes mix-before
+{
+	0% {opacity: 0;}
+	100%{opacity: 1;}
+}
+@keyframes mix-after
+{
+	0% {opacity: 0;}
+	100%{opacity: 1;}
+}
+@keyframes mixdiv
+{
+	0% {opacity: 0;}
+	100%{opacity: 1;}
+}
+@keyframes mixico
+{
+	0% {opacity: 0; height: 0;}
+	100%{opacity: 1;height:45px;}
+}

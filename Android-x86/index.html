@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<head>
+	<title>
+		Android-x86
+	</title>
+	<link rel="icon" href="https://www.android.com/static/images/fav/favicon.ico" type="image/x-icon" />
+</head>
+
+<body onresize="resize()" onload="load()">
+	<style type="text/css">
+	.res
+	{
+		width:max-content;
+		margin: auto;
+	}
+	</style>
+	<script>
+function load(){resize();}
+		function resize()
+		{
+			var u = navigator.userAgent;
+				if(u.indexOf("Android") > -1||u.indexOf("iPhone") > -1)
+				{
+					if(window.orientation.toString()=="90"||window.orientation.toString()=="-90")
+					{
+						applyCSS("body{zoom:1;}","scaleForPhone",true)
+					}
+					else
+					{
+						applyCSS("body{zoom:2.5;}","scaleForPhone",true)
+					}
+				}
+		}
+		function applyCSS(t,id,isremoved)
+		{
+			var s=document.createElement('style');
+			s.innerText=t;
+			s.id=id;
+			if(isremoved==true)
+			{
+				try
+				{
+					var e=document.getElementById(id);
+					e.remove();
+				}
+				catch{;}
+			}
+			document.body.appendChild(s);
+		}
+	</script>
+	<div class="res">
+        <a href="javascript:window.history.back()">...</a>
+        <a href="houdini9_y.iso"><p>houdini9_y.iso</a>
+		<a href="houdini9_y.sfs"><p>houdini9_y.sfs</a>
+	</div>
+</body>

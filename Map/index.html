@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<script>
+    var gif = new Image();
+    gif.src = "https://github.com/l-thoms/Thoms-World/raw/master/Newmap.gif";
+    var svg = document.createElement("img");
+    svg.source = "url('https://github.com/l-thoms/Thoms-World/raw/master/NewMap-full.svg')";
+    var t = null;
+    gif.onload = completed;
+    svg.onload = completed;
+    main();
+    function main()
+    {
+        var icon = document.createElement("link");
+        icon.rel="icon";
+        icon.href="icon.ico";
+        icon.type="image/x-icon";
+        var meta = document.createElement("meta");
+        meta.httpEquiv="Content-Type";
+        meta.content="text/html;charset=utf-8";
+        document.head.appendChild(icon);
+        document.head.title="Map";
+    }
+    function completed()
+    {
+        if(gif.complete&&svg.complete)
+        {
+            
+            document.body.style.backgroundColor = "white";
+            document.body.style.backgroundRepeat = "no-repeat";
+            document.body.style.backgroundSize ="contain";
+            document.body.style.backgroundPosition="center";
+            document.body.style.backgroundAttachment="fixed";
+            document.body.style.backgroundImage = "url('"+ gif.src + "')";
+            t = setTimeout(switchToSvg,6000);
+        }
+    }
+    function switchToSvg()
+    {
+        document.body.style.backgroundImage = svg.source;
+    }
+</script>

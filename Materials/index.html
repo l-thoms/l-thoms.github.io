@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<head>
+	<title>
+		Materials
+	</title>
+	<link rel="shortcut  icon" href="icon.png" type="image/x-png" />
+</head>
+
+<body onresize="resize()" onload="load()">
+	<style type="text/css">
+	.res
+	{
+		width:max-content;
+		margin: auto;
+	}
+	</style>
+	<script>
+		function load(){resize();}
+		function resize()
+		{
+			var u = navigator.userAgent;
+				if(u.indexOf("Android") > -1||u.indexOf("iPhone") > -1)
+				{
+					if(window.orientation.toString()=="90"||window.orientation.toString()=="-90")
+					{
+						applyCSS("body{zoom:1;}","scaleForPhone",true)
+					}
+					else
+					{
+						applyCSS("body{zoom:2.5;}","scaleForPhone",true)
+					}
+				}
+		}
+		function applyCSS(t,id,isremoved)
+		{
+			var s=document.createElement('style');
+			s.innerText=t;
+			s.id=id;
+			if(isremoved==true)
+			{
+				try
+				{
+					var e=document.getElementById(id);
+					e.remove();
+				}
+				catch{;}
+			}
+			document.body.appendChild(s);
+		}
+	</script>
+	<div class="res">
+         <a href="javascript:window.history.back()">...</a>
+        <a href=".\Warma"><p>Warma</a>
+	</div>
+</body>
