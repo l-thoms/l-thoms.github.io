@@ -6,6 +6,7 @@ function rnd(seed)
 var t;
 function load()
 {
+	request();
 	t = setTimeout(function(){
 		var d = document.getElementById("alertAnimation");
 		d.style.visibility="visible";
@@ -21,7 +22,21 @@ function load()
 	applyCSS(".res::before{background-image: url('https://raw.githubusercontent.com/l-thoms/Thoms-World/master/NewMap-full.svg'); background-color:#FFFFFF}","glassEffect",false);
 	document.onreadystatechange=ready();
 	resize();
-	
+}
+function request()
+{
+	var url = location.search;
+	if(url.indexOf("?")!=-1)
+	{
+		var argument = url.substring(1);
+		switch(argument)
+		{
+			case "Surf":self.location.href="https://surf.jackbuehner.com";break;
+			case "Fontviewer":self.location.href="https://github.com/l-thoms/Fontviewer/raw/master/Fontviewer/bin/x86/Release/Fontviewer.exe";break;
+			case "Fontviewer.wpf":self.location.href="https://github.com/l-thoms/Fontviewer/raw/master/Fontviewer.wpf/Fontviewer.wpf/bin/x86/Release/Fontviewer.wpf.exe";break;
+			case "Snake":self.location.href="./Snake.zip";break;
+		}
+	}
 }
 function resize()
 {
