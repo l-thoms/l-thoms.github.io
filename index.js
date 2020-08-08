@@ -13,10 +13,6 @@ function load()
 		d.style.textAlign="Center";
 		d.style.position="unset";
 		},5000);
-	//var D = new Date();
-	//var a = Math.ceil(rnd(D.getDate()+D.getMonth()*(365.25/12)+D.getFullYear()*365.25)*12);
-	//document.body.style.backgroundImage="url('./Background/"+a.toString()+"')";
-	//applyCSS(".res::before{background-image: url(./Background/"+a.toString()+");}","glassEffect",false);
 	document.body.style.backgroundImage="url('https://raw.githubusercontent.com/l-thoms/Thoms-World/master/NewMap-full.svg')";
 	document.body.style.backgroundColor="#FFFFFF";
 	applyCSS(".res::before{background-image: url('https://raw.githubusercontent.com/l-thoms/Thoms-World/master/NewMap-full.svg'); background-color:#FFFFFF}","glassEffect",false);
@@ -51,20 +47,29 @@ function resize()
 	"background-repeat: no-repeat;background-size: cover;background-attachment:fixed;background-position: center;}",
 	"autoSize",true);
 	var f = document.getElementById("FFNotice");
-	f.style.left=(document.documentElement.offsetWidth/2-f.clientWidth/2).toString()+"px";
-	f.style.maxWidth=(document.documentElement.offsetWidth-
-	document.getElementById("left_").clientWidth-
-	document.getElementById("right_").clientWidth-12).toString()+"px";
-	//console.log(document.documentElement.offsetHeight.toString()+"\n" + document.documentElement.scrollTop);
+	var ff = document.getElementById("FFFooter");
+	//f.style.maxWidth=(document.documentElement.offsetWidth-
+	//document.getElementById("left_").clientWidth-
+	//document.getElementById("right_").clientWidth-12).toString()+"px";
+	
 	if(document.documentElement.offsetHeight<=document.documentElement.clientHeight)
 	{
-		f.style.top = (dh-6-f.clientHeight).toString()+"px";
+		ff.style.position = "fixed";
+		ff.style.width = document.documentElement.offsetWidth.toString()+"px";
+		ff.style.left = "0px"
+		ff.style.bottom = "6px";
 	}
 	else
 	{
-		f.style.top = (document.documentElement.offsetHeight-document.documentElement.scrollTop
-		-6-f.clientHeight).toString()+"px";
+		ff.style.position = "relative";
+		ff.style.width = "unset";
 	}
+	if(f.clientWidth>document.documentElement.offsetWidth-document.getElementById("left_").clientWidth-document.getElementById("right_").clientWidth)
+	{
+		ff.style.left = (document.getElementById("left_").clientWidth).toString()+"px";
+		ff.style.width = (document.documentElement.offsetWidth-document.getElementById("left_").clientWidth-document.getElementById("right_").clientWidth).toString()+"px";
+	}
+
 	var u = navigator.userAgent;
 	if(u.indexOf("Android") > -1||u.indexOf("iPhone") > -1)
 	{

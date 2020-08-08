@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<head>
+	<title>讨论中心</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+	<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" onload="Script_Load()"></script>
+	<link rel="shortcut icon" type="image/x-icon" href="https://gitalk.github.io/favicon.ico">
+</head>
+
+<script type="text/javascript">
+	function Script_Load()
+	{
+		alert("");
+	}
+    function Body_OnLoad()
+    {
+        var gitalk = new Gitalk({
+        clientID: '13b0fd79407f6d5540db',
+        clientSecret: 'dd7cd4bd5d0c66c331a73eb323740dea04e2a7be',
+        repo: 'Thoms-World',
+        owner: 'l-thoms',
+        admin: ['l-thoms'],
+        id: 'gitalk-container',      // 请确保你的 location 连接小于 50 个字符，否则，插件会生成失败
+        distractionFreeMode: false  // 专注模式
+        })
+		gitalk.render('gitalk-container');
+		Body_Resize();
+		var init = document.getElementsByClassName("gt-initing");
+		var t = setInterval(function()
+		{
+			if(init[0] == null)
+			{
+				var container = document.getElementById("gitalk-container");
+				var footer = document.getElementById("footer");
+				footer.style.transition = "linear 0.25s opacity";
+				footer.style.opacity ="1";
+				footer.ontransitionend = function(){footer.style.transition = "unset";}
+				clearInterval(t);
+			}
+		},1);
+    }
+	function Body_Resize()
+	{
+		var footer = document.getElementById("footer")
+		if(document.documentElement.offsetHeight<document.documentElement.clientHeight)
+		{
+			footer.style.position = "fixed";
+			footer.style.width = (document.documentElement.offsetWidth).toString()+"px";
+			footer.style.left="0px";
+			footer.style.bottom = "6px";
+		}
+		else
+		{
+			footer.style.position = "relative";
+			footer.style.width = "unset";
+		}
+	}
+	function sleep(d)
+	{
+  		for(var t = Date.now();Date.now() - t <= d;);
+	}
+</script>
+
+<style type="text/css">
+    .gt-header-textarea
+    {
+        font-family: inherit;
+        font-weight: 300;
+    }
+    .gt-btn
+    {
+        font-family: inherit;
+        font-weight: bold;
+		transition: linear 0.2s;
+    }
+	.gt-btn-login:hover
+	{
+		background-color: #88acee;
+		border-color: #88acee;
+	}
+	.gt-btn-login:active
+	{
+		background-color: #3a75e2;
+		border-color: #3a75e2;
+		box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.25);
+	}
+	.gt-btn-preview:active
+	{
+		background-color: #e0e0e0;
+	}
+</style>
+
+<body onload="Body_OnLoad()" onresize="Body_Resize()" style="font-family: '思源黑体 CN','Noto sans cjk sc','思源黑体';">
+	<div id="gitalk-container" style="max-width: 768px; margin: 0 auto;opacity: 1;"></div>
+	<footer id="footer" class="footerClass" style="opacity:0;">
+		<div id="footerContent" style="text-align: center;">本页基于<a href="https://github.com/gitalk/gitalk" style="color: #6190e8; text-decoration: none;"
+		>GiTalk</a>技术构建。<a href="https://github.com/l-thoms/Thoms-World/issues" style="color: #6190e8; text-decoration: none;">更多讨论</a></div>
+	</footer>
+</body>
