@@ -8,10 +8,6 @@
 </head>
 
 <script type="text/javascript">
-	function Script_Load()
-	{
-		alert("");
-	}
     function Body_OnLoad()
     {
         var gitalk = new Gitalk({
@@ -28,7 +24,7 @@
 		var init = document.getElementsByClassName("gt-initing");
 		var t = setInterval(function()
 		{
-			if(init[0] == null)
+			if(init[0] == null)//gt-initing消失
 			{
 				var container = document.getElementById("gitalk-container");
 				var footer = document.getElementById("footer");
@@ -41,7 +37,7 @@
     }
 	function Body_Resize()
 	{
-		var footer = document.getElementById("footer")
+		var footer = document.getElementById("footer")//底部文字
 		if(document.documentElement.offsetHeight<document.documentElement.clientHeight)
 		{
 			footer.style.position = "fixed";
@@ -54,10 +50,35 @@
 			footer.style.position = "relative";
 			footer.style.width = "unset";
 		}
+		var u = navigator.userAgent;
+		if(u.indexOf("Android") > -1||u.indexOf("iPhone") > -1)//适配手机页面缩放
+		{
+			if(window.orientation.toString()=="90"||window.orientation.toString()=="-90")
+			{
+				applyCSS("body{zoom:1;}","scaleForPhone",true);
+			}
+			else
+			{
+				applyCSS("body{zoom:2.5;}","scaleForPhone",true);
+			}
+		}
 	}
-	function sleep(d)
+	
+	function applyCSS(t,id,isremoved)//添加CSS元素
 	{
-  		for(var t = Date.now();Date.now() - t <= d;);
+		var s=document.createElement('style');
+		s.innerText=t;
+		s.id=id;
+		if(isremoved==true)
+		{
+			try
+			{
+				var e=document.getElementById(id);
+				e.remove();
+			}
+			catch(er){};
+		}
+		document.body.appendChild(s);
 	}
 </script>
 
