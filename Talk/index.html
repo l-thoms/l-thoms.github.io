@@ -37,6 +37,20 @@
     }
 	function Body_Resize()
 	{
+		var u = navigator.userAgent;
+		if(u.indexOf("Android") > -1||u.indexOf("iPhone") > -1)//适配手机页面缩放
+		{
+			if(window.orientation.toString()=="90"||window.orientation.toString()=="-90")
+			{
+				applyCSS("body{zoom:1;}","scaleForPhone",true);
+				document.documentElement.style.margin = "0 auto";
+			}
+			else
+			{
+				applyCSS("body{zoom:2.5;}","scaleForPhone",true);
+				document.documentElement.style.margin = "unset";
+			}
+		}
 		var footer = document.getElementById("footer")//底部文字
 		if(document.documentElement.offsetHeight<document.documentElement.clientHeight)
 		{
@@ -49,18 +63,6 @@
 		{
 			footer.style.position = "relative";
 			footer.style.width = "unset";
-		}
-		var u = navigator.userAgent;
-		if(u.indexOf("Android") > -1||u.indexOf("iPhone") > -1)//适配手机页面缩放
-		{
-			if(window.orientation.toString()=="90"||window.orientation.toString()=="-90")
-			{
-				applyCSS("body{zoom:1;}","scaleForPhone",true);
-			}
-			else
-			{
-				applyCSS("body{zoom:2.5;}","scaleForPhone",true);
-			}
 		}
 	}
 	
