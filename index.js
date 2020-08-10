@@ -70,7 +70,7 @@ function resize()
 	if(document.documentElement.offsetHeight<=document.documentElement.clientHeight)//页面高度小于视图高度
 	{
 		ff.style.position = "fixed";
-		ff.style.width = document.documentElement.offsetWidth.toString()+"px";
+		ff.style.width = document.documentElement.clientWidth.toString()+"px";
 		ff.style.left = "0px"
 		ff.style.bottom = "6px";
 	}
@@ -82,7 +82,7 @@ function resize()
 	if(f.clientWidth>document.documentElement.offsetWidth-document.getElementById("left_").clientWidth-document.getElementById("right_").clientWidth)
 	{
 		ff.style.left = (document.getElementById("left_").clientWidth).toString()+"px";
-		ff.style.width = (document.documentElement.offsetWidth-document.getElementById("left_").clientWidth-document.getElementById("right_").clientWidth-8).toString()+"px";
+		ff.style.width = (document.documentElement.clientWidth-document.getElementById("left_").clientWidth-document.getElementById("right_").clientWidth-8).toString()+"px";
 	}
 }
 function applyCSS(t,id,isremoved)//添加CSS元素
