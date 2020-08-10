@@ -63,15 +63,14 @@ function resize()
 	}
 	var f = document.getElementById("FFNotice");
 	var ff = document.getElementById("FFFooter");
-	//f.style.maxWidth=(document.documentElement.offsetWidth-
-	//document.getElementById("left_").clientWidth-
-	//document.getElementById("right_").clientWidth-12).toString()+"px";
 	
+	//ff.style.background="#00ffff";
+
 	if(document.documentElement.offsetHeight<=document.documentElement.clientHeight)//页面高度小于视图高度
 	{
 		ff.style.position = "fixed";
-		ff.style.width = document.documentElement.clientWidth.toString()+"px";
-		ff.style.left = "0px"
+		ff.style.right = "4px";
+		ff.style.left = "4px"
 		ff.style.bottom = "6px";
 	}
 	else
@@ -81,8 +80,8 @@ function resize()
 	}
 	if(f.clientWidth>document.documentElement.offsetWidth-document.getElementById("left_").clientWidth-document.getElementById("right_").clientWidth)
 	{
-		ff.style.left = (document.getElementById("left_").clientWidth).toString()+"px";
-		ff.style.width = (document.documentElement.clientWidth-document.getElementById("left_").clientWidth-document.getElementById("right_").clientWidth-8).toString()+"px";
+		ff.style.marginRight = (document.getElementById("right_").clientWidth).toString()+"px";	
+		ff.style.marginLeft = (document.getElementById("left_").clientWidth).toString()+"px";
 	}
 }
 function applyCSS(t,id,isremoved)//添加CSS元素

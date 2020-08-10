@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
 	<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" onload="Script_Load()"></script>
-	<link rel="shortcut icon" type="image/x-icon" href="https://gitalk.github.io/favicon.ico">
+	<link rel="shortcut icon" type="image/x-icon" href="icon.ico">
 </head>
 
 <script type="text/javascript">
@@ -52,10 +52,10 @@
 			}
 		}
 		var footer = document.getElementById("footer")//底部文字
-		if(document.documentElement.offsetHeight<document.documentElement.clientHeight)
+		if(document.documentElement.offsetHeight<document.documentElement.clientHeight)//页面高度小于窗体高度
 		{
 			footer.style.position = "fixed";
-			footer.style.width = (document.documentElement.clientWidth).toString()+"px";
+			footer.style.right="0px";
 			footer.style.left="0px";
 			footer.style.bottom = "6px";
 		}
@@ -64,6 +64,8 @@
 			footer.style.position = "relative";
 			footer.style.width = "unset";
 		}
+		if(parseInt(footer.clientWidth)>parseInt(document.documentElement.clientWidth))
+			footer.style.width = (document.documentElement.clientWidth).toString()+"px";
 	}
 	
 	function applyCSS(t,id,isremoved)//添加CSS元素
@@ -124,7 +126,7 @@
 	}
 </style>
 
-<body onload="Body_OnLoad()" onresize="Body_Resize()" style="font-family: '思源黑体 CN','Noto sans cjk sc','思源黑体';">
+<body onload="Body_OnLoad()" onresize="Body_Resize()" onscroll="Body_Resize()" style="font-family: '思源黑体 CN','Noto sans cjk sc','思源黑体';">
 	<div id="gitalk-container" style="max-width: 768px; margin: 0 auto;opacity: 1;"></div>
 	<footer id="footer" class="footerClass" style="opacity:0;">
 		<div id="footerContent" style="text-align: center;">本页基于<a href="https://github.com/gitalk/gitalk" style="color: #6190e8; text-decoration: none;"
