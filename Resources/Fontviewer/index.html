@@ -659,7 +659,7 @@ onresize="Body_Resize()" onkeydown="Body_Keydown()" onmousewheel="Body_Keydown()
             FontChange();
             FontSizePt.value = parseFloat(parseFloat(FontSizePt.value).toFixed(1)).toString();
             if(FontSizePt.value=='NaN')FontSizePt.value = ''
-        " onchange="Selector_Show();Selector_Show();" list="FontSizeListPt"/>
+        " onchange="Selector_Show();Selector_Show();"/>
         <div id="LaStyle" style="font-size: 9pt; position: absolute; top: 680%;">倾斜：</div>
         <select id="FontStyle" style="position: absolute; top: 680%; right: 0px; width: 67%; padding: 0px;" oninput="FontChange()">
             <option>normal</option>
