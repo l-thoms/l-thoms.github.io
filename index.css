@@ -29,7 +29,7 @@
 	content:'';
 	position:absolute;
 	top:0;right:0;bottom:0;left:0;
-	background: url(./resources/Noise);
+	background: url(./Resources/Noise);
 	filter: opacity(0.08);
 	z-index: -1;
 	animation-name:mix-after;

@@ -1,0 +1,699 @@
+<!DOCTYPE HTML>
+<head>
+    <title>Fontviewer</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="icon" href="icon.ico"/>
+    <script src="Language.js"></script><!--Detect Language-->
+</head>
+<script>
+    var LongText,LongTextContent,TextBox,BuLongOK,LaMain,TrackBar,Selector,FontFamily,FontWeight,FontSizePt,FontSizePx,FontStyle,FontStretch,CheckUnderLine,CheckOverLine,CheckThrough,
+    B,I,U,D,LaUnderLine,LaTopLine,LaThrough,BuSelectClose,BuSelect,LaSize,LaWeight,LaStyle,LaStretch,FontFamilyHint,BuSelectMenu,ItBG,ItBGCl,ItBGPh,ItCl,ItFi,ItBGTitle,BGColorDialog,
+    FGColorDialog,BGFileDialog,FontFileDialog,CustomStyle,LaRenderState;
+    var DPI = window.devicePixelRatio;
+	var Title = "Fontviewer";
+    var Pf = parseFloat;
+    function InitObjecs()
+    {
+        LongText = document.getElementById("LongText");
+        LongTextContent = document.getElementById("LongTextBox");
+        TextBox = document.getElementById("TextBox");
+        BuLongOK = document.getElementById("BuLongOK");
+        LaMain = document.getElementById("LaMain");
+        TrackBar = document.getElementById("TrackBar");
+        Selector = document.getElementById("FontSelector");
+        FontFamily = document.getElementById("FontFamily");
+        FontWeight = document.getElementById("FontWeight");
+        FontSizePt = document.getElementById("FontSizePt");
+        FontSizePx = document.getElementById("FontSizePx");
+        FontStyle = document.getElementById("FontStyle");
+        FontStretch = document.getElementById("FontStretch");
+        CheckUnderLine = document.getElementById("CheckUnderLine");
+        CheckOverLine = document.getElementById("CheckOverLine");
+        CheckThrough = document.getElementById("CheckThrough");
+        LaUnderLine = document.getElementById("LaUnderLine");
+        LaTopLine = document.getElementById("LaTopLine");
+        LaThrough = document.getElementById("LaThrough");
+        BuSelectClose = document.getElementById("BuSelectClose");
+        BuSelect = document.getElementById("BuSelect");
+        LaSize = document.getElementById("LaSize");
+        LaWeight = document.getElementById("LaWeight");
+        LaStyle = document.getElementById("LaStyle");
+        LaStretch = document.getElementById("LaStretch");
+        FontFamilyHint = document.getElementById("FontFamilyHint");
+        BuSelectMenu = document.getElementById("BuSelectMenu");
+        ItBG = document.getElementById("ItBG");
+        ItBGTitle = document.getElementById("ItBGTitle");
+        ItBGCl = document.getElementById("ItBGCl");
+        ItBGPh = document.getElementById("ItBGPh");
+        ItFi = document.getElementById("ItFi");
+        ItCl = document.getElementById("ItCl");
+        BGColorDialog = document.getElementById("BGColorDialog");
+        FGColorDialog = document.getElementById("FGColorDialog");
+        BGFileDialog = document.getElementById("BGFileDialog");
+        CustomStyle = document.getElementById("CustomStyle");
+        FontFileDialog = document.getElementById("FontFileDialog");
+        LaRenderState = document.getElementById("LaRenderState");
+        B = document.getElementById("B");
+        I = document.getElementById("I");
+        U = document.getElementById("U");
+        D = document.getElementById("D");
+    }
+    function Body_Load()
+    {
+        var UA = navigator.userAgent;
+        InitObjecs();
+		LongText.addEventListener("transitionend", function()
+		{
+            LongText.style.transition = "unset";
+			if(!IsLongOpened){LongText.style.visibility="hidden"; LongText.style.height="0%";}
+			else LongText.style.visibility="visible";
+		});
+        if (UA.toString().indexOf("Chrome")>-1)
+        {
+            document.getElementById("TextBox").style.borderWidth="1px";
+            document.getElementById("BuSelect").style.borderWidth="1px";
+            document.getElementById("BuLong").style.borderWidth="1px";
+        }
+        InitLanguage();
+        Body_Resize();
+        if(TextBox.value!="") TextBox_TextChange();
+        FontChange();
+        TextBox.focus();
+        Selector_Show();Selector_Show();
+    }
+    var IsLongOpened = false;
+    function BuLong_Click()
+    {
+		if(!IsLongOpened)
+        {
+            TextBox.readOnly = true;
+            LongText.style.visibility="visible";
+            LongTextContent.value = TextBox.value;
+            LongTextContent.select();
+            LongTextContent.focus();
+            LongText.style.transition = "height 0.5s";
+            LongText.style.height="100%";
+			LongText.style.opacity = "1";
+            BuLongOK.style.bottom = "10px";
+        }
+        else
+        {
+            TextBox.readOnly = false;
+            var foreValue = TextBox.value;
+            TextBox.value = LongTextContent.value;
+            TextBox.focus();
+        	LongText.style.transition = "0.33s linear";
+        	LongText.style.opacity="0";
+			TextBox.selectionEnd = LongTextContent.selectionEnd;
+			TextBox.selectionStart = LongTextContent.selectionEnd;
+            if(LongTextContent.value!=foreValue)TextBox_TextChange();
+        }
+        IsLongOpened = ~IsLongOpened;
+    }
+	function LongText_Exit()
+	{
+        if(IsLongOpened)
+        {
+		    TextBox.readOnly = false;
+            LongText.style.transition = "0.33s linear";
+            LongText.style.opacity="0";
+            IsLongOpened = ~IsLongOpened;
+        }
+        TextBox.focus();
+	}
+    function TextBox_TextChange()
+    {
+        LaMain.innerText = TextBox.value;
+    }
+    function Track()
+    {
+        LaMain.style.fontSize = TrackBar.value.toString()+"pt";
+        Selector_Show();
+        FontSizePt.oninput();
+    }
+    function Body_Resize()
+    {   
+        DPI = window.devicePixelRatio;
+        LongTextContent.style.height = (document.documentElement.clientHeight-12-20-43).toString()+"px";
+    }
+    function ConvertToPx(value)
+    {
+        var px = value;
+        if (value.indexOf("pt")>-1)
+        {   
+            px = parseFloat(value)*4.0/3.0;
+        }
+        return px.toString()+"px";
+    }
+	function ConvertToPt(value)
+	{
+		var pt = value;
+        if (value.indexOf("px")>-1)
+        {   
+            pt = parseFloat(value)*3.0/4.0;
+        }
+        return pt.toString()+"pt";
+	}
+    function GetActualSize(pxValue)
+    {
+        var ret = 0;
+        ret = parseFloat(pxValue)*DPI;
+        return ret;
+    }
+    function FontChange()
+    {
+        LaMain.style.fontFamily = FontFamily.value;
+        LaMain.style.fontWeight = FontWeight.value;
+        LaMain.style.fontSize = FontSizePt.value +"pt";
+        if(Pf(FontSizePt.value).toString()!="NaN")
+            TrackBar.value = parseInt(FontSizePt.value);
+        LaMain.style.fontStretch = FontStretch.value;
+        LaMain.style.fontStyle = FontStyle.value;
+        var textDecoration = "";
+        if(CheckUnderLine.checked)textDecoration+="underline ";
+        if(CheckOverLine .checked)textDecoration+="overline ";
+        if(CheckThrough  .checked)textDecoration+="line-through ";
+        LaMain.style.textDecoration = textDecoration;
+        if(IsFontOpen)
+            FontFamily.value == "" ? FontFamilyHint.style.visibility = "" : FontFamilyHint.style.visibility = "hidden";
+        BIUDFeedback();
+    }
+    document.addEventListener("DOMMouseScroll",function(){Body_Keydown()});
+    const KEYS_SPACE = 32;
+    const KEYS_ENTER = 13;
+    function Body_Keydown()
+    {
+		var kc = window.event.keyCode;
+        //alert(kc);
+		//屏蔽按键
+        if( 
+            (window.event.ctrlKey&&(window.event.wheelDelta!=undefined&&navigator.userAgent.indexOf("Firefox")==-1)) ||//非火狐屏蔽Ctrl+滚轮	╮
+            (window.event.ctrlKey&&(window.event.detail!=0&&navigator.userAgent.indexOf("Firefox")>-1)) ||//火狐屏蔽Ctrl+滚轮					>屏蔽缩放
+            (window.event.ctrlKey&&(kc==107||kc==109/*数字键*/||kc==61||kc==173/*火狐*/||kc==187||kc==189/*Chromium*/))||//                    ╯
+			(window.event.ctrlKey&&(kc==76||kc==66||kc==73||kc==85||kc==68||kc==70||kc==77||kc==38||kc==40))//屏蔽Ctrl+L.B.I.U.D.F.M.Up.Dn
+        )
+        {
+            window.event.returnValue = false;
+        }
+		//分解事件
+		if ((window.event.ctrlKey&&kc==76&&!IsLongOpened)||(window.event.ctrlKey&&kc==13&&IsLongOpened))//Ctrl+L,Ctrl+Enter
+			BuLong_Click();
+		else if (kc==27)//Esc
+			LongText_Exit();
+        else if(window.event.ctrlKey && kc==70)//Ctrl+F
+            BuSelect_Click();
+        else if(window.event.ctrlKey && kc==77)//Ctrl+M
+        {
+            BuSelectMenu.style.display = "unset";
+            ItBG.focus();
+            BG_In();
+        }
+        else if((window.event.ctrlKey&&kc==107)||(window.event.ctrlKey&&kc==61)||(window.event.ctrlKey&&kc==187))//Ctrl++
+        {
+            LaMain.style.fontSize = (parseFloat(LaMain.style.fontSize)+1).toString()+"pt";
+            TrackBar.value = parseFloat(LaMain.style.fontSize);
+            Selector_Show();Selector_Show();
+        }
+        else if((window.event.ctrlKey&&kc==109)||(window.event.ctrlKey&&kc==173)||(window.event.ctrlKey&&kc==189))//Ctrl+-
+        {
+            LaMain.style.fontSize = (parseFloat(LaMain.style.fontSize)-1).toString()+"pt";
+            if(parseFloat(LaMain.style.fontSize)<1)LaMain.style.fontSize = "1pt";
+            TrackBar.value = parseFloat(LaMain.style.fontSize);
+            Selector_Show();Selector_Show();
+        }
+        else if(window.event.ctrlKey&&kc==106)//Ctrl+*
+        {
+            LaMain.style.fontSize = parseInt((parseFloat(LaMain.style.fontSize)*2)).toString()+"pt";
+            TrackBar.value = parseFloat(LaMain.style.fontSize);
+            Selector_Show();Selector_Show();
+        }
+        else if(window.event.ctrlKey&&kc==111)//Ctrl+/
+        {
+            LaMain.style.fontSize = parseInt((parseFloat(LaMain.style.fontSize)/2)).toString()+"pt";
+            TrackBar.value = parseFloat(LaMain.style.fontSize);
+            if(parseFloat(LaMain.style.fontSize)<1)LaMain.style.fontSize = "1pt";
+            Selector_Show();Selector_Show();
+        }
+        else if(window.event.ctrlKey&&kc==66)BClick();//Ctrl+B
+        else if(window.event.ctrlKey&&kc==73)IClick();//Ctrl+I
+        else if(window.event.ctrlKey&&kc==85)UClick();//Ctrl+U
+        else if(window.event.ctrlKey&&kc==68)DClick();//Ctrl+D
+        else if((window.event.ctrlKey&&(window.event.wheelDelta>0&&navigator.userAgent.indexOf("Firefox")==-1))||
+        (window.event.ctrlKey&&(window.event.detail<0&&navigator.userAgent.indexOf("Firefox")>-1)))
+        {
+            LaMain.style.fontSize = (parseFloat(LaMain.style.fontSize)+10).toString()+"pt";
+            TrackBar.value = parseFloat(LaMain.style.fontSize);
+            Selector_Show();Selector_Show(); 
+        }
+        else if((window.event.ctrlKey&&(window.event.wheelDelta<0&&navigator.userAgent.indexOf("Firefox")==-1))||
+        (window.event.ctrlKey&&(window.event.detail>0&&navigator.userAgent.indexOf("Firefox")>-1)))
+        {
+            LaMain.style.fontSize = (parseFloat(LaMain.style.fontSize)-10).toString()+"pt";
+            if(parseFloat(LaMain.style.fontSize)<10)LaMain.style.fontSize = "1pt";
+            TrackBar.value = parseFloat(LaMain.style.fontSize);
+            Selector_Show();Selector_Show(); 
+        }
+        else if(window.event.ctrlKey&&kc==38)LaMain.scrollTop -= LaMain.clientHeight/5;
+        else if(window.event.ctrlKey&&kc==40)LaMain.scrollTop += LaMain.clientHeight/5;
+        var t = setTimeout(SwitchTab,1);
+    }
+    var LangRightBtn = "按右键查看更多选项";
+	function BuSelect_MouseOver(){document.title = Title+" - "+LangRightBtn;}
+	function BuSelect_MouseOut(){document.title = Title;}
+	var IsFontOpen = false;
+    function BuSelect_Click()
+    {
+        if(!IsFontOpen)
+        {
+            Selector.style.display = "";
+            Selector_Show();
+            FontFamily.focus();
+        }
+        else
+        {
+            Selector.style.display = "none";
+            FontFamilyHint.style.visibility = "hidden";
+            TextBox.focus();
+        }
+        IsFontOpen = ~IsFontOpen;
+    }
+    var StrTextRendering = "字体渲染：";
+    var StrSubPixel = "子像素渲染";
+    var StrGrayScale = "灰度渲染";
+    var StrSpOrGs = "子像素渲染或灰度渲染";
+    var StrSubPixel2 = "第二次子像素渲染";
+    var StrGrayScale2 = "第二次灰度渲染";
+    function Selector_Show()
+    {
+        FontFamily.value = LaMain.style.fontFamily;
+        FontWeight.value = LaMain.style.fontWeight;
+        FontSizePt.value = Pf(Pf(LaMain.style.fontSize).toFixed(1));
+        FontSizePx.value = Pf(Pf(ConvertToPx(LaMain.style.fontSize)).toFixed(1));
+        if(FontSizePt.value =="NaN"){FontSizePt.value="";FontSizePx.value="";}
+        FontStyle.value = LaMain.style.fontStyle;
+        FontStretch.value = LaMain.style.fontStretch;
+        LaMain.style.textDecoration.indexOf("underline")>-1 ? CheckUnderLine.checked=true : CheckUnderLine.checked = false;
+        LaMain.style.textDecoration.indexOf("overline")>-1 ? CheckOverLine.checked=true : CheckOverLine.checked = false;
+        LaMain.style.textDecoration.indexOf("line-through")>-1 ? CheckThrough.checked=true : CheckThrough.checked = false;
+        FontFamily.value == "" ? FontFamilyHint.style.visibility = "" : FontFamilyHint.style.visibility = "hidden";
+        //字体渲染反馈
+        var size = GetActualSize(ConvertToPx(LaMain.style.fontSize));
+        var ua = navigator.userAgent.toLocaleLowerCase();
+        if(ua.indexOf("firefox")>-1)
+        {
+            size<100 ? LaRenderState.innerText=StrTextRendering+ StrSubPixel : LaRenderState.innerText=StrTextRendering+StrGrayScale;
+            if(size>88.3&&size<100&&(LaMain.style.fontStyle=="italic"||LaMain.style.fontStyle=="oblique"))LaRenderState.innerText = StrTextRendering+StrSpOrGs;
+        }
+        else if(ua.indexOf("chrome")>-1)
+        {
+            if(size<=48) LaRenderState.innerText = StrTextRendering+StrSubPixel;
+            else if(size<162) LaRenderState.innerText = StrTextRendering+StrGrayScale;
+            else if(size<=324) LaRenderState.innerText = StrTextRendering+StrSubPixel2;
+            else LaRenderState.innerText = StrTextRendering + StrGrayScale2;
+        }
+        else LaRenderState.style.display = "none";
+        //检测旧版Edge
+        if(ua.indexOf("edge")>-1)
+        {
+            LaRenderState.style.display = "none";
+        }
+    }
+    function BClick()
+    {
+        //设置
+        var content = LaMain.style.fontWeight.toString().toLowerCase();
+        if(content.indexOf("bold")>-1||parseInt(content)>500)
+            LaMain.style.fontWeight = "normal"
+        else
+            LaMain.style.fontWeight = "bold";
+        //反馈
+        
+        BIUDFeedback();
+        Selector_Show();Selector_Show();
+    }
+    function IClick()
+    {
+        //设置
+        var content = LaMain.style.fontStyle.toString().toLowerCase();
+        if(content.indexOf("italic")>-1||content.indexOf("oblique")>-1)
+            LaMain.style.fontStyle = "normal"
+        else
+            LaMain.style.fontStyle = "italic";
+        //反馈
+        
+        BIUDFeedback();
+        Selector_Show();Selector_Show();
+    }
+    function UClick()
+    {
+        //设置
+        var content = LaMain.style.textDecoration.toString().toLowerCase();
+        if(content.indexOf("underline")>-1)
+            LaMain.style.textDecoration = content.replace("underline","");
+        else
+            LaMain.style.textDecoration = content + " underline";
+        
+        BIUDFeedback();
+        Selector_Show();Selector_Show();
+    }
+    function DClick()
+    {
+        //设置
+        var content = LaMain.style.textDecoration.toString().toLowerCase();
+        if(content.indexOf("line-through")>-1)
+            LaMain.style.textDecoration = content.replace("line-through","");
+        else
+            LaMain.style.textDecoration = content + " line-through";
+
+        BIUDFeedback();
+        Selector_Show();Selector_Show();
+    }
+    function BIUDFeedback()
+    {
+        //B
+        var content = LaMain.style.fontWeight.toString().toLowerCase();
+        if(content.indexOf("bold")>-1||parseInt(content)>500)
+        {
+            B.classList.remove("BIUDButtons");
+            B.classList.add("BIUDButtons_Activated");
+        }
+        else
+        {
+            B.classList.remove("BIUDButtons_Activated");
+            B.classList.add("BIUDButtons");
+        }
+        //I
+        var content = LaMain.style.fontStyle.toString().toLowerCase();
+        if(content.indexOf("italic")>-1||content.indexOf("oblique")>-1)
+        {
+            I.classList.remove("BIUDButtons");
+            I.classList.add("BIUDButtons_Activated");
+        }
+        else
+        {
+            I.classList.remove("BIUDButtons_Activated");
+            I.classList.add("BIUDButtons");
+        }        
+        //U
+        var content = LaMain.style.textDecoration.toString().toLowerCase();
+        if(content.indexOf("underline")>-1)
+        {
+            U.classList.remove("BIUDButtons");
+            U.classList.add("BIUDButtons_Activated");
+        }
+        else
+        {
+            U.classList.remove("BIUDButtons_Activated");
+            U.classList.add("BIUDButtons");
+        }
+        //D
+        var content = LaMain.style.textDecoration.toString().toLowerCase();
+        if(content.indexOf("line-through")>-1)
+        {
+            D.classList.remove("BIUDButtons");
+            D.classList.add("BIUDButtons_Activated");
+        }
+        else
+        {
+            D.classList.remove("BIUDButtons_Activated");
+            D.classList.add("BIUDButtons");
+        }
+    }
+    function LongTextContent_Tab()
+    {
+        if(window.event.keyCode==9)
+        {
+            window.event.returnValue=false;
+            var selectionStart = LongTextContent.selectionStart;
+            var selectionEnd = LongTextContent.selectionEnd;
+            var ret = "";
+            ret += LongTextContent.value.substring(0,selectionStart)+"\t"+LongTextContent.value.substring(selectionEnd,LongTextContent.value.length+1);
+            LongTextContent.value = ret;
+            var index = selectionEnd+1-(selectionEnd - selectionStart);
+            LongTextContent.selectionStart = index;
+            LongTextContent.selectionEnd =   index;
+        }
+    }
+    function BG_In()
+    {
+        document.getElementById('ItBG_Content').style.display='unset';
+    }
+    function BG_Out()
+    {
+        document.getElementById('ItBG_Content').style.display='none';
+    }
+    function CloseMenu()
+    {
+        BuSelectMenu.style.display = "none";
+    }
+    function SwitchTab()
+    {
+        //console.log(document.activeElement.tabIndex);
+        var tab = document.activeElement.tabIndex;
+        if(tab<4 || tab>8)CloseMenu();
+        tab>=4 && tab<=6 ? BG_In() : BG_Out();
+    }
+    function ItBGCl_Click()
+    {
+        CloseMenu();
+        BGColorDialog.click();
+    }
+    function ItCl_Click()
+    {
+        CloseMenu();
+        FGColorDialog.click();
+    }
+    function ItBGPh_Click()
+    {
+        CloseMenu();
+        BGFileDialog.click();
+    }
+    function BGFileDialog_OnChange()
+    {
+        var reader = new FileReader();
+        reader.readAsDataURL(BGFileDialog.files[0]);
+        reader.onloadend = function(event)
+        {
+            document.body.style.background = "url(\'" +event.target.result+"\')";
+            //background-repeat: no-repeat; background-size: cover;background-position:center; background-attachment: fixed;
+            document.body.style.backgroundRepeat="no-repeat";
+            document.body.style.backgroundSize = "cover";
+            document.body.style.backgroundPosition = "center";
+            document.body.style.backgroundAttachment = "fixed";
+            delete reader;
+        }
+    }
+    function ItFi_Click()
+    {
+        CloseMenu();
+        FontFileDialog.click();
+    }
+    function GetFileName(fileName)
+    {
+        for(var i=fileName.length-1;i>=0;i--)
+        {
+            if(fileName[i]=='.')
+            return fileName.substring(0,i);
+        }
+        return fileName;
+    }
+    function GetExternName(fileName)
+    {
+        for(var i=fileName.length-1;i>=0;i--)
+        {
+            if(fileName[i]=='.')
+            return fileName.substring(i+1,fileName.length);
+        }
+        return "";
+    }
+    function FontFileDialog_OnChange()
+    {
+        var fontName = "";var fontData = "";
+        var reader = new FileReader();
+        reader.readAsDataURL(FontFileDialog.files[0]);
+        reader.onloadend = function(event)
+        {
+            fontName = "'"+GetFileName(FontFileDialog.files[0].name)+"'";//不支持ttc字体
+            fontData = "url('" +event.target.result+"')";
+            var ret = `
+            @font-face
+            {
+                font-family: `+fontName+`;
+                src: `+fontData+`;
+            }`
+            console.log(ret);
+            CustomStyle.innerHTML = ret;
+            LaMain.style.fontFamily = fontName;
+            Selector_Show();Selector_Show();
+            delete reader;
+        }
+    }
+</script>
+<style>
+    /*未激活*/
+    .BIUDButtons
+    {
+        background: #ffffff;
+        border-width: 0px;
+        font-family: serif;
+        border-radius: 0px;
+    }
+    .BIUDButtons:hover
+    {
+        background: #C6c6c6;
+    }
+    .BIUDButtons:active
+    {
+        background: #B1B1B1;
+    }
+    /*激活*/
+    .BIUDButtons_Activated
+    {
+        background: #c6c6c6;
+        border-width: 0px;
+        font-family: serif;
+        border-radius: 0px;
+    }
+    .BIUDButtons_Activated:active
+    {
+        background: #B1B1B1;
+    }
+    .Item
+    {
+        line-height: 22px;
+        padding-left: 9pt;
+        background-clip: 22px 22px;
+        background: #f2f2f2;
+        border-width: 0px;
+        border-radius: 0px;
+        text-align: left;
+        font-size: 9pt;
+    }
+    .Item:hover
+    {
+        background: #91c9f7;
+    }
+</style>
+<style id="CustomStyle">/*TTC字体不支持*/
+</style>
+<body style="margin: 0px; background-repeat: no-repeat; background-size: cover;background-position:center; background-attachment: fixed;" onload="Body_Load()" 
+onresize="Body_Resize()" onkeydown="Body_Keydown()" onmousewheel="Body_Keydown()" onmousedown="var t = setTimeout(SwitchTab,1);" onfocus="TextBox.focus()">
+    <input type="color" id="BGColorDialog" style="display:none" oninput="document.body.style.background = BGColorDialog.value;  document.body.style.transition = '0.125s linear';"
+    onchange="document.body.style.transition = '';"/><!--ColorDialog-->
+    <input type="color" id="FGColorDialog" style="display:none" oninput="LaMain.style.color = FGColorDialog.value; LaMain.style.transition = '0.125s linear';"
+    onchange="LaMain.style.transition = '0.125s cubic-bezier(0, 0, 0, 1)';"/>
+    <input type="file" id="BGFileDialog" style="display: none;" accept=".jpg,.png,.bmp,.gif,.jpeg,.ico" onchange="BGFileDialog_OnChange()"><!--FileDialog-->
+    <input type="file" id="FontFileDialog" style="display: none;" accept=".ttf,.otf,.woff,.woff2,.eot,.svg" onchange="FontFileDialog_OnChange()">
+    <textarea id="TextBox" oninput="TextBox_TextChange()" style="margin: 0px; position: fixed;left: 0px;width: calc(100% - 142px); height:18px;padding: 0px;font-size: 
+    12px;line-height:18px; resize: none;" value="" tabindex="1"></textarea><!--Textbox-->
+    <div id="BuSelectMenu" style="position: absolute; right: 0px; top: 0px; border-style: solid; border-width: 1px; border-color: #cccccc;z-index: 11; 
+    background: #f2f2f2; font-size: 9pt; min-width: 120px; box-sizing:border-box; padding: 0px; top: 20px; display: none;" >
+        <div class="Item" onmouseenter="BG_In()" onmouseleave="BG_Out()"  tabindex="4"
+        id="ItBG"><div id="ItBGTitle">背景</div>
+            <div style="position: absolute; right: 9pt; top: 0px; line-height:22px;" >∨</div><!--背景-->
+            <div id="ItBG_Content" style="display: none;">
+                <button class="Item" tabindex="5" style="width:100%; box-sizing: border-box;" id="ItBGCl" onclick="ItBGCl_Click()">纯色</button><br>
+                <button class="Item" tabindex="6" style="width:100%; box-sizing: border-box;" id="ItBGPh" onclick="ItBGPh_Click()">图片</button><br>
+            </div>
+        </div>
+        <button class="Item" tabindex="7" style="box-sizing: border-box; width:100%;" id="ItCl" onclick="ItCl_Click()">颜色</button><br>
+        <button class="Item" tabindex="8" style="box-sizing: border-box; width:100%;" id="ItFi" onclick="ItFi_Click()">从文件中选择字体</button>
+    </div>
+    <input contextmenu="BuSelectMenu" id="BuSelect" type="button" style="position: fixed; width: 120px; right: 0px;max-height:20;height: 20px; margin: 0px;
+    padding: 0px;font-size: 12px; text-align: center;line-height: 12px;" value="选择字体" onmouseover="BuSelect_MouseOver()" onmouseout="BuSelect_MouseOut()" 
+    onclick="BuSelect_Click()" tabindex="3" oncontextmenu="event.returnValue = false;BuSelectMenu.style.display='unset';"><!--选择字体-->
+    <input value="v" type="button" id="BuLong" style="position: fixed;height: 20px;width: 20px;font-size: 12px; right: 120px;line-height: 12px;padding: 0px; margin: 0px;" 
+    onclick="BuLong_Click()" tabindex="2"/><!--BuLong-->
+    <div id="LaMain" style="position: fixed;top: 20px;left: 0px; width: 100%;height: calc(100% - 20px - 66px); z-index: 0; white-space:pre-wrap; -webkit-font-smoothing:none;
+    font-size:9pt; transition:0.125s cubic-bezier(0, 0, 0, 1);overflow-y:auto; overflow-x:hidden;word-break: break-all;">字体</div><!--LaMain-->
+    <input id="TrackBar" oninput="Track()" type="range" style="bottom: 0px; position: fixed; width:calc(100% - 18px); border-width: 0px; padding: 0px; left: 9px; height: 39px; 
+    vertical-align: top; margin: 0px;" min="1" max="256" value="9" tabindex="-1"/><!--Trackbar-->
+    <div id="LongText" style="background-color: white; position: fixed; top: 20px; width: 100%; transition: height 0.5s cubic-bezier(0, 0, 0, 1);height: 0%;
+    visibility:hidden;overflow:hidden; z-index: 10;"><!--LongText-->
+        <textarea id="LongTextBox" style="left: 12px; width:calc(100% - 24px);bottom:calc(43px + 20px);  position: absolute; 
+        padding: 0px;margin:0px;font-size: 12px;resize: none;" onkeydown="LongTextContent_Tab()"></textarea>
+        <input onclick="BuLong_Click()" id="BuLongOK" type="button" style="position:absolute; width: 50px; height: 25px;left:calc((100% - 50px) / 2) ;
+        top: calc(100% - 10px - 25px - 20px); margin: 0px; padding: 0px;font-size: 12px; text-align: center;line-height: 12px;" value="确定">
+    </div>
+    <div id="FontSelector" style=" position: fixed;right: 0px; width: 140px;display: none;" tabindex="4">
+        <div style="position:absolute; height:1260%;width:100%;background:#ffffff;"></div>
+        <textarea id="FontFamily" style="width: 100%; height:280%; margin: 0px; padding: 0px;resize: none; position: absolute; " oninput="FontChange()"></textarea>
+        <div id="FontFamilyHint" style="pointer-events: none; position: absolute; color: rgba(0, 0, 0, 0.5); font-size: 9pt;">请直接输入字体名称</div>
+        <div id="LaWeight" style="font-size: 9pt; position: absolute; top: 320%; height: 100%;">粗细：</div>
+        <datalist id="FontWeightList">
+            <option>lighter</option>
+            <option>normal</option>
+            <option>bold</option>
+            <option>bolder</option>
+        </datalist>
+        <input id="FontWeight" type="text" style="position: absolute; right: 0px; width: 67%; top: 320%; padding: 0px;" oninput="FontChange()" list="FontWeightList" value="normal"/>
+        <div id="LaSize" style="font-size: 9pt; position: absolute; top: 440%;           ">大小：</div>
+        <div style="font-size: 9pt; position: absolute; top: 440%; left: 90%;">pt</div>
+        <div style="font-size: 9pt; position: absolute; top: 560%; left: 90%;">px</div>
+        <datalist id="FontSizeListPt">
+            <option value="42" label="初号">初号</option>
+            <option value="36" label="小初">小初</option>
+            <option value="28" label="一号">一号</option>
+            <option value="24" label="小一">小一</option>
+            <option value="22" label="二号">二号</option>
+            <option value="18" label="小二">小二</option>
+            <option value="16" label="三号">三号</option>
+            <option value="15" label="小三">小三</option>
+            <option value="14" label="四号">四号</option>
+            <option value="12" label="小四">小四</option>
+            <option value="10.5" label="五号">五号</option>
+            <option value="9"  label="小五">小五</option>
+            <option value="7.5" label="六号">六号</option>
+            <option value="6.5" label="小六">小六</option>
+            <option value="5.5" label="七号">七号</option>
+            <option value="5" label="八号">八号</option>
+        </datalist>
+        <!--PT-->
+        <input id="FontSizePt" type="text" style="position: absolute; right: 12%; width:55%; top: 440%; padding: 0px;"
+        oninput="FontChange();FontSizePx.value = parseFloat(parseFloat(ConvertToPx(FontSizePt.value + 'pt')).toFixed(1)).toString();if(FontSizePx.value=='NaN')FontSizePx.value = ''"
+        onchange="Selector_Show();Selector_Show();" list="FontSizeListPt"/>
+        <!--PX-->
+        <input id="FontSizePx" type="text" style="position: absolute; right: 12%; width:55%; top: 560%; padding: 0px;" 
+        oninput="
+            FontSizePt.value = parseFloat(ConvertToPt(FontSizePx.value + 'px')).toString();
+            FontChange();
+            FontSizePt.value = parseFloat(parseFloat(FontSizePt.value).toFixed(1)).toString();
+            if(FontSizePt.value=='NaN')FontSizePt.value = ''
+        " onchange="Selector_Show();Selector_Show();" list="FontSizeListPt"/>
+        <div id="LaStyle" style="font-size: 9pt; position: absolute; top: 680%;">倾斜：</div>
+        <select id="FontStyle" style="position: absolute; top: 680%; right: 0px; width: 67%; padding: 0px;" oninput="FontChange()">
+            <option>normal</option>
+            <option>italic</option>
+            <option>oblique</option>
+        </select>
+        <div id="LaStretch" style="font-size: 9pt; position: absolute; top: 800%;">拉伸：</div>
+        <select id="FontStretch" style="position: absolute; top: 800%; right: 0px; width: 67%; padding: 0px;" oninput="FontChange()">
+            <option>ultra-condensed</option>
+            <option>extra-condensed</option>
+            <option>condensed</option>
+            <option>semi-condensed</option>
+            <option selected="true">normal</option>
+            <option>semi-expanded</option>
+            <option>expanded</option>
+            <option>extra-expanded</option>
+            <option>ultra-expanded</option>
+        </select>
+        <div style="top: 920%; left: 0%; position: absolute; font-size: 9pt;" id="LaUnderLine">下划线</div>
+        <input style="position: absolute; top: 920%; right: 35%;" type="checkbox" id="CheckUnderLine" oninput="FontChange()"/>
+        <div style="top: 1040%; left: 0%; position: absolute; font-size: 9pt; " id="LaTopLine">顶线</div>
+        <input style="position: absolute; top: 1040%; right: 35%;" type="checkbox" id="CheckOverLine" oninput="FontChange()"/>
+        <div style="top: 1160%; left: 0%; position: absolute; font-size: 9pt; " id="LaThrough">删除线</div>
+        <input style="position: absolute; top: 1160%; right: 35%;" type="checkbox" id="CheckThrough"  oninput="FontChange()" />
+        <button style="position: absolute; top: 1140%; right: 0%;" onclick="BuSelect_Click()" id="BuSelectClose">关闭</button>
+        <br>
+    </div>
+    <button id="B" class="BIUDButtons" style="width: 22px; height: 23px; padding: 0px; margin: 0px; font-size: 9pt; position: absolute; 
+    bottom: 42px; right: 87px; font-weight: bold;" onclick="BClick()" tabindex="-1">B</button>
+    <button id="I" class="BIUDButtons" style="width: 22px; height: 23px; padding: 0px; margin: 0px; font-size: 9pt; position: absolute; 
+    bottom: 42px; right: 60px; font-style: italic;" onclick="IClick()" tabindex="-1">I</button>
+    <button id="U" class="BIUDButtons" style="width: 22px; height: 23px; padding: 0px; margin: 0px; font-size: 9pt; position: absolute; 
+    bottom: 42px; right: 31px; text-decoration: underline;" onclick="UClick()" tabindex="-1">U</button>
+    <button id="D" class="BIUDButtons" style="width: 22px; height: 23px; padding: 0px; margin: 0px; font-size: 8pt; position: absolute; 
+    bottom: 42px; right: 3px; text-decoration: line-through;" onclick="DClick()" tabindex="-1">abc</button>
+    <div id="LaRenderState" style="position: absolute; bottom: 46px; font-size: 9pt; left: 8px;"> 字体渲染</div>
+</body>

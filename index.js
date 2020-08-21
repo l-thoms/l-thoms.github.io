@@ -28,9 +28,8 @@ function request()
 		switch(argument.toLowerCase())
 		{
 			case "surf":window.location.href="https://surf.jackbuehner.com";break;
-			case "fontviewer":window.location.href="https://github.com/l-thoms/Fontviewer/raw/master/Fontviewer/bin/x86/Release/Fontviewer.exe";break;
-			case "fontviewer.wpf":window.location.href="https://github.com/l-thoms/Fontviewer/raw/master/Fontviewer.wpf/Fontviewer.wpf/bin/x86/Release/Fontviewer.wpf.exe";break;
-			case "snake":window.location.href="./resources/Snake.zip";break;
+			case "fontviewer":window.location.href="./Resources/Fontviewer";break;
+			case "snake":window.location.href="./Resources/Snake.zip";break;
 			case "yueping":
 			case "jyutping":window.location.href="http://www.iso10646hk.net/jp/database/index.jsp";break;
 		}
