@@ -177,6 +177,7 @@
         if(IsFontOpen)
             FontFamily.value == "" ? FontFamilyHint.style.visibility = "" : FontFamilyHint.style.visibility = "hidden";
         BIUDFeedback();
+        RenderingFeedback();
     }
     document.addEventListener("DOMMouseScroll",function(){Body_Keydown()});
     const KEYS_SPACE = 32;
@@ -297,6 +298,10 @@
         LaMain.style.textDecoration.indexOf("line-through")>-1 ? CheckThrough.checked=true : CheckThrough.checked = false;
         FontFamily.value == "" ? FontFamilyHint.style.visibility = "" : FontFamilyHint.style.visibility = "hidden";
         //字体渲染反馈
+        RenderingFeedback();
+    }
+    function RenderingFeedback()
+    {
         var size = GetActualSize(ConvertToPx(LaMain.style.fontSize));
         var ua = navigator.userAgent.toLocaleLowerCase();
         if(ua.indexOf("firefox")>-1)
@@ -508,12 +513,18 @@
     }
     function FontFileDialog_OnChange()
     {
+        ReadFont(FontFileDialog.files[0]);
+    }
+    function ReadFont(data)
+    {
+        var ext = GetExternName(data.name);
+        if(ext!="ttf"&&ext!="otf"&&ext!="woff"&&ext!="woff2"&&ext!="eot")return;
         var fontName = "";var fontData = "";
         var reader = new FileReader();
-        reader.readAsDataURL(FontFileDialog.files[0]);
+        reader.readAsDataURL(data);
         reader.onloadend = function(event)
         {
-            fontName = "'"+GetFileName(FontFileDialog.files[0].name)+"'";//不支持ttc字体
+            fontName = "'"+GetFileName(data.name)+"'";//不支持ttc字体
             fontData = "url('" +event.target.result+"')";
             var ret = `
             @font-face
@@ -521,12 +532,21 @@
                 font-family: `+fontName+`;
                 src: `+fontData+`;
             }`
-            console.log(ret);
+            //console.log(ret);
             CustomStyle.innerHTML = ret;
             LaMain.style.fontFamily = fontName;
+            LaMain.innerText = LaMain.style.fontFamily.replaceAll("\"","");
             Selector_Show();Selector_Show();
             delete reader;
         }
+    }
+    document.ondragover = function(event){event.preventDefault();}
+    document.ondrop = function(event){event.preventDefault();}
+    function DragOver(event){event.preventDefault();}
+    function Drop(event)
+    {
+        ReadFont(event.dataTransfer.files[0]);
+        event.preventDefault();
     }
 </script>
 <style>
@@ -605,7 +625,7 @@ onresize="Body_Resize()" onkeydown="Body_Keydown()" onmousewheel="Body_Keydown()
     <input value="v" type="button" id="BuLong" style="position: fixed;height: 20px;width: 20px;font-size: 12px; right: 120px;line-height: 12px;padding: 0px; margin: 0px;" 
     onclick="BuLong_Click()" tabindex="2"/><!--BuLong-->
     <div id="LaMain" style="position: fixed;top: 20px;left: 0px; width: 100%;height: calc(100% - 20px - 66px); z-index: 0; white-space:pre-wrap; -webkit-font-smoothing:none;
-    font-size:9pt; transition:0.125s cubic-bezier(0, 0, 0, 1);overflow-y:auto; overflow-x:hidden;word-break: break-all;">字体</div><!--LaMain-->
+    font-size:9pt; transition:0.125s cubic-bezier(0, 0, 0, 1);overflow-y:auto; overflow-x:hidden;word-break: break-all;" ondragover="DragOver(event)" ondrop="Drop(event)">字体</div><!--LaMain-->
     <input id="TrackBar" oninput="Track()" type="range" style="bottom: 0px; position: fixed; width:calc(100% - 18px); border-width: 0px; padding: 0px; left: 9px; height: 39px; 
     vertical-align: top; margin: 0px;" min="1" max="256" value="9" tabindex="-1"/><!--Trackbar-->
     <div id="LongText" style="background-color: white; position: fixed; top: 20px; width: 100%; transition: height 0.5s cubic-bezier(0, 0, 0, 1);height: 0%;
@@ -650,18 +670,18 @@ onresize="Body_Resize()" onkeydown="Body_Keydown()" onmousewheel="Body_Keydown()
         </datalist>
         <!--PT-->
         <input id="FontSizePt" type="text" style="position: absolute; right: 12%; width:55%; top: 440%; padding: 0px;"
-        oninput="FontChange();FontSizePx.value = parseFloat(parseFloat(ConvertToPx(FontSizePt.value + 'pt')).toFixed(1)).toString();if(FontSizePx.value=='NaN')FontSizePx.value = ''"
-        onchange="Selector_Show();Selector_Show();" list="FontSizeListPt"/>
+        oninput="FontChange();FontSizePx.value = parseFloat(parseFloat(ConvertToPx(FontSizePt.value + 'pt')).toFixed(1)).toString();if(FontSizePx.value=='NaN')FontSizePx.value = ''
+        RenderingFeedback()" list="FontSizeListPt"/>
         <!--PX-->
         <input id="FontSizePx" type="text" style="position: absolute; right: 12%; width:55%; top: 560%; padding: 0px;" 
         oninput="
             FontSizePt.value = parseFloat(ConvertToPt(FontSizePx.value + 'px')).toString();
             FontChange();
             FontSizePt.value = parseFloat(parseFloat(FontSizePt.value).toFixed(1)).toString();
-            if(FontSizePt.value=='NaN')FontSizePt.value = ''
-        " onchange="Selector_Show();Selector_Show();"/>
+            if(FontSizePt.value=='NaN')FontSizePt.value = '';RenderingFeedback();
+        "/>
         <div id="LaStyle" style="font-size: 9pt; position: absolute; top: 680%;">倾斜：</div>
-        <select id="FontStyle" style="position: absolute; top: 680%; right: 0px; width: 67%; padding: 0px;" oninput="FontChange()">
+        <select id="FontStyle" style="position: absolute; top: 680%; right: 0px; width: 67%; padding: 0px;" oninput="FontChange();">
             <option>normal</option>
             <option>italic</option>
             <option>oblique</option>
