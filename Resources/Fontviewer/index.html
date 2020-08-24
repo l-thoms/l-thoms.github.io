@@ -1,11 +1,10 @@
-<!DOCTYPE HTML>
+<!DOCTYPE HTML><html lang="en-US">
 <head>
     <title>Fontviewer</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="icon" href="icon.ico"/>
     <script src="Language.js"></script><!--Detect Language-->
-</head>
-<script>
+<script type="text/javascript">
     var LongText,LongTextContent,TextBox,BuLongOK,LaMain,TrackBar,Selector,FontFamily,FontWeight,FontSizePt,FontSizePx,FontStyle,FontStretch,CheckUnderLine,CheckOverLine,CheckThrough,
     B,I,U,D,LaUnderLine,LaTopLine,LaThrough,BuSelectClose,BuSelect,LaSize,LaWeight,LaStyle,LaStretch,FontFamilyHint,BuSelectMenu,ItBG,ItBGCl,ItBGPh,ItCl,ItFi,ItBGTitle,BGColorDialog,
     FGColorDialog,BGFileDialog,FontFileDialog,CustomStyle,LaRenderState;
@@ -79,7 +78,7 @@
         if(TextBox.value!="") TextBox_TextChange();
         FontChange();
         TextBox.focus();
-        Selector_Show();Selector_Show();
+        Selector_Show();
     }
     var IsLongOpened = false;
     function BuLong_Click()
@@ -213,27 +212,27 @@
         {
             LaMain.style.fontSize = (parseFloat(LaMain.style.fontSize)+1).toString()+"pt";
             TrackBar.value = parseFloat(LaMain.style.fontSize);
-            Selector_Show();Selector_Show();
+            Selector_Show();
         }
         else if((window.event.ctrlKey&&kc==109)||(window.event.ctrlKey&&kc==173)||(window.event.ctrlKey&&kc==189))//Ctrl+-
         {
             LaMain.style.fontSize = (parseFloat(LaMain.style.fontSize)-1).toString()+"pt";
             if(parseFloat(LaMain.style.fontSize)<1)LaMain.style.fontSize = "1pt";
             TrackBar.value = parseFloat(LaMain.style.fontSize);
-            Selector_Show();Selector_Show();
+            Selector_Show();
         }
         else if(window.event.ctrlKey&&kc==106)//Ctrl+*
         {
             LaMain.style.fontSize = parseInt((parseFloat(LaMain.style.fontSize)*2)).toString()+"pt";
             TrackBar.value = parseFloat(LaMain.style.fontSize);
-            Selector_Show();Selector_Show();
+            Selector_Show();
         }
         else if(window.event.ctrlKey&&kc==111)//Ctrl+/
         {
             LaMain.style.fontSize = parseInt((parseFloat(LaMain.style.fontSize)/2)).toString()+"pt";
             TrackBar.value = parseFloat(LaMain.style.fontSize);
             if(parseFloat(LaMain.style.fontSize)<1)LaMain.style.fontSize = "1pt";
-            Selector_Show();Selector_Show();
+            Selector_Show();
         }
         else if(window.event.ctrlKey&&kc==66)BClick();//Ctrl+B
         else if(window.event.ctrlKey&&kc==73)IClick();//Ctrl+I
@@ -244,7 +243,7 @@
         {
             LaMain.style.fontSize = (parseFloat(LaMain.style.fontSize)+10).toString()+"pt";
             TrackBar.value = parseFloat(LaMain.style.fontSize);
-            Selector_Show();Selector_Show(); 
+            Selector_Show();
         }
         else if((window.event.ctrlKey&&(window.event.wheelDelta<0&&navigator.userAgent.indexOf("Firefox")==-1))||
         (window.event.ctrlKey&&(window.event.detail>0&&navigator.userAgent.indexOf("Firefox")>-1)))
@@ -252,7 +251,7 @@
             LaMain.style.fontSize = (parseFloat(LaMain.style.fontSize)-10).toString()+"pt";
             if(parseFloat(LaMain.style.fontSize)<10)LaMain.style.fontSize = "1pt";
             TrackBar.value = parseFloat(LaMain.style.fontSize);
-            Selector_Show();Selector_Show(); 
+            Selector_Show();
         }
         else if(window.event.ctrlKey&&kc==38)LaMain.scrollTop -= LaMain.clientHeight/5;
         else if(window.event.ctrlKey&&kc==40)LaMain.scrollTop += LaMain.clientHeight/5;
@@ -334,7 +333,7 @@
         //反馈
         
         BIUDFeedback();
-        Selector_Show();Selector_Show();
+        Selector_Show();
     }
     function IClick()
     {
@@ -347,7 +346,7 @@
         //反馈
         
         BIUDFeedback();
-        Selector_Show();Selector_Show();
+        Selector_Show();
     }
     function UClick()
     {
@@ -359,7 +358,7 @@
             LaMain.style.textDecoration = content + " underline";
         
         BIUDFeedback();
-        Selector_Show();Selector_Show();
+        Selector_Show();
     }
     function DClick()
     {
@@ -371,7 +370,7 @@
             LaMain.style.textDecoration = content + " line-through";
 
         BIUDFeedback();
-        Selector_Show();Selector_Show();
+        Selector_Show();
     }
     function BIUDFeedback()
     {
@@ -536,7 +535,7 @@
             CustomStyle.innerHTML = ret;
             LaMain.style.fontFamily = fontName;
             LaMain.innerText = LaMain.style.fontFamily.replaceAll("\"","");
-            Selector_Show();Selector_Show();
+            Selector_Show();
             delete reader;
         }
     }
@@ -596,6 +595,7 @@
 </style>
 <style id="CustomStyle">/*TTC字体不支持*/
 </style>
+</head>
 <body style="margin: 0px; background-repeat: no-repeat; background-size: cover;background-position:center; background-attachment: fixed;" onload="Body_Load()" 
 onresize="Body_Resize()" onkeydown="Body_Keydown()" onmousewheel="Body_Keydown()" onmousedown="var t = setTimeout(SwitchTab,1);" onfocus="TextBox.focus()">
     <input type="color" id="BGColorDialog" style="display:none" oninput="document.body.style.background = BGColorDialog.value;  document.body.style.transition = '0.125s linear';"
@@ -625,7 +625,8 @@ onresize="Body_Resize()" onkeydown="Body_Keydown()" onmousewheel="Body_Keydown()
     <input value="v" type="button" id="BuLong" style="position: fixed;height: 20px;width: 20px;font-size: 12px; right: 120px;line-height: 12px;padding: 0px; margin: 0px;" 
     onclick="BuLong_Click()" tabindex="2"/><!--BuLong-->
     <div id="LaMain" style="position: fixed;top: 20px;left: 0px; width: 100%;height: calc(100% - 20px - 66px); z-index: 0; white-space:pre-wrap; -webkit-font-smoothing:none;
-    font-size:9pt; transition:0.125s cubic-bezier(0, 0, 0, 1);overflow-y:auto; overflow-x:hidden;word-break: break-all;" ondragover="DragOver(event)" ondrop="Drop(event)">字体</div><!--LaMain-->
+    font-size:9pt; transition:0.125s cubic-bezier(0, 0, 0, 1);overflow-y:auto; overflow-x:hidden;word-break: break-all;" ondragover="DragOver(event)" ondrop="Drop(event)">字体</div>
+    <!--LaMain-->
     <input id="TrackBar" oninput="Track()" type="range" style="bottom: 0px; position: fixed; width:calc(100% - 18px); border-width: 0px; padding: 0px; left: 9px; height: 39px; 
     vertical-align: top; margin: 0px;" min="1" max="256" value="9" tabindex="-1"/><!--Trackbar-->
     <div id="LongText" style="background-color: white; position: fixed; top: 20px; width: 100%; transition: height 0.5s cubic-bezier(0, 0, 0, 1);height: 0%;
@@ -716,4 +717,4 @@ onresize="Body_Resize()" onkeydown="Body_Keydown()" onmousewheel="Body_Keydown()
     <button id="D" class="BIUDButtons" style="width: 22px; height: 23px; padding: 0px; margin: 0px; font-size: 8pt; position: absolute; 
     bottom: 42px; right: 3px; text-decoration: line-through;" onclick="DClick()" tabindex="-1">abc</button>
     <div id="LaRenderState" style="position: absolute; bottom: 46px; font-size: 9pt; left: 8px;"> 字体渲染</div>
-</body>
+</body></html>
