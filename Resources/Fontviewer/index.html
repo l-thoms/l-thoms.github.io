@@ -73,7 +73,9 @@
             document.getElementById("BuSelect").style.borderWidth="1px";
             document.getElementById("BuLong").style.borderWidth="1px";
         }
-        InitLanguage();
+        try{
+            InitLanguage();
+        }catch(e){;}
         Body_Resize();
         if(TextBox.value!="") TextBox_TextChange();
         FontChange();
@@ -700,11 +702,11 @@ onresize="Body_Resize()" onkeydown="Body_Keydown()" onmousewheel="Body_Keydown()
             <option>ultra-expanded</option>
         </select>
         <div style="top: 920%; left: 0%; position: absolute; font-size: 9pt;" id="LaUnderLine">下划线</div>
-        <input style="position: absolute; top: 920%; right: 35%;" type="checkbox" id="CheckUnderLine" oninput="FontChange()"/>
+        <input style="position: absolute; top: 920%; right: 35%;" type="checkbox" id="CheckUnderLine"     onclick="FontChange();"/>
         <div style="top: 1040%; left: 0%; position: absolute; font-size: 9pt; " id="LaTopLine">顶线</div>
-        <input style="position: absolute; top: 1040%; right: 35%;" type="checkbox" id="CheckOverLine" oninput="FontChange()"/>
+        <input style="position: absolute; top: 1040%; right: 35%;" type="checkbox" id="CheckOverLine"     onclick="FontChange()"/>
         <div style="top: 1160%; left: 0%; position: absolute; font-size: 9pt; " id="LaThrough">删除线</div>
-        <input style="position: absolute; top: 1160%; right: 35%;" type="checkbox" id="CheckThrough"  oninput="FontChange()" />
+        <input style="position: absolute; top: 1160%; right: 35%;" type="checkbox" id="CheckThrough"      onclick="FontChange()" />
         <button style="position: absolute; top: 1140%; right: 0%;" onclick="BuSelect_Click()" id="BuSelectClose">关闭</button>
         <br>
     </div>
