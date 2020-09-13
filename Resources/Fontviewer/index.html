@@ -518,7 +518,7 @@
     }
     function ReadFont(data)
     {
-        var ext = GetExternName(data.name);
+        var ext = GetExternName(data.name).toLowerCase();
         if(ext!="ttf"&&ext!="otf"&&ext!="woff"&&ext!="woff2"&&ext!="eot")return;
         var fontName = "";var fontData = "";
         var reader = new FileReader();
