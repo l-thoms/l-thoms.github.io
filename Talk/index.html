@@ -26,7 +26,6 @@
         distractionFreeMode: false  // 专注模式
         })
 		gitalk.render('gitalk-container');
-		Body_Resize();
 		var init = document.getElementsByClassName("gt-initing");
 		var t = setInterval(function()
 		{
@@ -68,6 +67,7 @@
 				}, 500);
 			}, 0);
 		}, 0);
+		Body_Resize();
 	}
 	function DisplayContents()
 	{

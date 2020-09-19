@@ -21,7 +21,7 @@ function load()
 	//document.body.style.backgroundImage="url('https://raw.githubusercontent.com/l-thoms/Thoms-World/master/NewMap-full.svg')";
 	document.body.style.backgroundColor="#FFFFFF";
 	document.onreadystatechange=ready();
-	var width=0;
+	var width=4;
 	for(var i=0;i<document.getElementsByClassName("menu").length;i++)
 	{
 		width+=document.getElementsByClassName("menu")[i].clientWidth;
@@ -77,6 +77,17 @@ function resize()
 	}
 	document.body.clientWidth<document.getElementById("MenuContent").clientWidth+document.getElementById("Img").clientHeight+16?
 	document.getElementById("MenuFloat").style.float="":document.getElementById("MenuFloat").style.float="right";
+	if(document.documentElement.scrollTop>0)
+	{
+		document.getElementById("Menu").style.transform = "scale(0.75) translateX(calc(-100% / 6)) translateY(calc(-16px * 0.75))";
+		document.getElementById("Menu").style.width = "calc(100% / 0.75)";
+	}
+	else
+	{
+		document.getElementById("Menu").style.transform = "";
+		document.getElementById("Menu").style.width = "100%";
+
+	}
 }
 function applyCSS(t,id,isremoved)//添加CSS元素
 {
