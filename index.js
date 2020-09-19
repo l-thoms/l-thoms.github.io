@@ -4,6 +4,11 @@ function rnd(seed)
 	return x;
 }
 var t;
+function GetRandom(seed)
+{
+	var floatSeed = parseFloat(seed);
+	return Math.abs(Math.abs(Math.pow(floatSeed*1024,3)-Math.floor(Math.pow(floatSeed*1024,3)))*2-1);
+}
 function load()
 {
 	request();
@@ -13,10 +18,20 @@ function load()
 		d.style.textAlign="Center";
 		d.style.position="unset";
 		},5000);
-	document.body.style.backgroundImage="url('https://raw.githubusercontent.com/l-thoms/Thoms-World/master/NewMap-full.svg')";
+	//document.body.style.backgroundImage="url('https://raw.githubusercontent.com/l-thoms/Thoms-World/master/NewMap-full.svg')";
 	document.body.style.backgroundColor="#FFFFFF";
-	applyCSS(".res::before{background-image: url('https://raw.githubusercontent.com/l-thoms/Thoms-World/master/NewMap-full.svg'); background-color:#FFFFFF}","glassEffect",false);
 	document.onreadystatechange=ready();
+	var width=0;
+	for(var i=0;i<document.getElementsByClassName("menu").length;i++)
+	{
+		width+=document.getElementsByClassName("menu")[i].clientWidth;
+	}
+	document.getElementById("MenuContent").style.width = width.toString()+"px";
+	var currentDay = (new Date().getFullYear()-1)*365.25+(new Date().getMonth()-1)*(365.25/12)+new Date().getDate();
+	var order =parseInt(GetRandom((currentDay/(1969*365.25+1)))*6)+1;
+	//alert(order);
+	document.body.style.backgroundImage="url('./Resources/Background/"+order.toString()+"')";
+	applyCSS(".res::before{background-image:url('./Resources/Background/"+order.toString()+"'); background-color:#FFFFFF}","glassEffect",false);
 	resize();
 }
 function request()
@@ -60,6 +75,8 @@ function resize()
 			applyCSS("body{zoom:2.5;}","scaleForPhone",true);
 		}
 	}
+	document.body.clientWidth<document.getElementById("MenuContent").clientWidth+document.getElementById("Img").clientHeight+16?
+	document.getElementById("MenuFloat").style.float="":document.getElementById("MenuFloat").style.float="right";
 }
 function applyCSS(t,id,isremoved)//添加CSS元素
 {
@@ -94,13 +111,13 @@ function ready()//文档状态
 	r.addEventListener("animationend",function next()
 	{
 		animationStopped();
-		var a = Math.ceil(Math.random()*100);
-		if(a>95) 
-		{
-			var i = document.getElementById("icon");
-			i.style.display="inherit";
-			i.style.animationPlayState="running";
-		}
+		//var a = Math.ceil(Math.random()*100);
+		//if(a>95) 
+		//{
+		//	var i = document.getElementById("icon");
+		//	i.style.display="inherit";
+		//	i.style.animationPlayState="running";
+		//}
 	});
 }
 function animationStopped()//中止动画
@@ -108,8 +125,6 @@ function animationStopped()//中止动画
 	var rc=document.getElementById('dyn');
 	rc.style.animationPlayState="running";
 	var rc=document.getElementById('dyn-content');
-	rc.style.animationPlayState="running";
-	var rc=document.getElementById('FFNotice');
 	rc.style.animationPlayState="running";
 }
 function stopLoading()

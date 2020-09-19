@@ -44,6 +44,7 @@
 					document.getElementById("Loading").ontransitionend=function()
 					{
 						if(parseInt(document.getElementById("Loading").style.opacity)==0)document.body.removeChild(document.getElementById("Loading"));
+						Body_Resize();
 					}
 				}, 500);
 			}
@@ -94,7 +95,7 @@
 	function Body_Resize()
 	{
 		var u = navigator.userAgent;
-		if(u.indexOf("Android") > -1||u.indexOf("iPhone") > -1)//适配手机页面缩放
+		if((u.indexOf("Android") > -1||u.indexOf("iPhone") > -1)&&AnimationState==3)//适配手机页面缩放
 		{
 			if(window.orientation.toString()=="90"||window.orientation.toString()=="-90")
 			{
