@@ -3,11 +3,17 @@
 	<title>讨论中心</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-	<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" onload="Script_Load()"></script>
+	<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
 	<link rel="shortcut icon" type="image/x-icon" href="icon.ico">
 </head>
 
 <script type="text/javascript">
+	function Sleep(ms)
+	{
+		var endTime = new Date().getTime() + parseInt(ms);
+		while(new Date().getTime()<endTime){}
+	}
+	var Interval,left,AnimationState=0;
     function Body_OnLoad()
     {
         var gitalk = new Gitalk({
@@ -28,13 +34,63 @@
 			{
 				var container = document.getElementById("gitalk-container");
 				var footer = document.getElementById("footer");
-				footer.style.transition = "linear 0.25s opacity";
 				footer.style.opacity ="1";
-				footer.ontransitionend = function(){footer.style.transition = "unset";}
 				clearInterval(t);
+				clearInterval(Interval);
+				AnimationState=3;
+				DisplayContents();
+				setTimeout(() => {
+					document.getElementById("Loading").style.opacity="0";
+					document.getElementById("Loading").ontransitionend=function()
+					{
+						if(parseInt(document.getElementById("Loading").style.opacity)==0)document.body.removeChild(document.getElementById("Loading"));
+					}
+				}, 500);
 			}
 		},1);
-    }
+		document.getElementById("Title").style.opacity="1";
+		setTimeout(() => {
+			Sleep(500);
+			document.getElementById("Content").style.opacity="1";
+			AnimationState = 1
+			setTimeout(() => {
+				Interval = setInterval(() => {
+					if(AnimationState==1)
+					{
+						AnimationState=2;
+					}
+					else if(AnimationState==2)
+					{
+						AnimationState=1;
+					}
+					DisplayContents();
+				}, 500);
+			}, 0);
+		}, 0);
+	}
+	function DisplayContents()
+	{
+		if(document.getElementById("Loading")!=null)
+		{
+			if(AnimationState==1)
+			{
+				left =((document.body.clientWidth-document.getElementById("ConText").clientWidth)/2
+				-document.getElementById("TriangleLeft").clientWidth-60);
+			}
+			else if(AnimationState==2)
+			{
+				left =((document.body.clientWidth-document.getElementById("ConText").clientWidth)/2
+				-document.getElementById("TriangleLeft").clientWidth-120);
+			}
+			else if(AnimationState==3)
+			{
+				left =((document.body.clientWidth-document.getElementById("ConText").clientWidth)/2
+				-document.getElementById("TriangleLeft").clientWidth);
+			}
+			document.getElementById("TriangleLeft").style.left = left.toString()+"px";
+			document.getElementById("TriangleRight").style.right = left.toString()+"px";
+		}
+	}
 	function Body_Resize()
 	{
 		var u = navigator.userAgent;
@@ -51,6 +107,7 @@
 				document.documentElement.style.margin = "unset";
 			}
 		}
+		setInterval(() => {
 		var footer = document.getElementById("footer")//底部文字
 		if(document.documentElement.offsetHeight<document.documentElement.clientHeight)//页面高度小于窗体高度
 		{
@@ -64,8 +121,14 @@
 			footer.style.position = "relative";
 			footer.style.width = "unset";
 		}
+		
+		if(document.getElementById("Loading")!=null){
 		if(parseInt(footer.clientWidth)>parseInt(document.documentElement.clientWidth))
 			footer.style.width = (document.documentElement.clientWidth).toString()+"px";
+			document.getElementById("ConText").style.left = ((document.body.clientWidth-document.getElementById("ConText").clientWidth)/2).toString()+"px";
+			if(AnimationState!=0)DisplayContents();
+		}
+		}, 0);
 	}
 	
 	function applyCSS(t,id,isremoved)//添加CSS元素
@@ -132,4 +195,18 @@
 		<div id="footerContent" style="text-align: center;">本页基于<a href="https://github.com/gitalk/gitalk" style="color: #6190e8; text-decoration: none;"
 		>GiTalk</a>技术构建。<a href="https://github.com/l-thoms/Thoms-World/issues" style="color: #6190e8; text-decoration: none;">更多讨论</a></div>
 	</footer>
+	<div id="Loading" style="background-color: white;top: 0%;left: 0%;right: 0%;bottom: 0%; position:fixed; z-index: 1; animation-name: fade-out; z-index: 2147483647;
+	transition-timing-function:linear; transition-property: opacity; transition-duration: 0.5s;">
+		<div style="font-family: serif; font-size: 120px; position: absolute;left: 0%; right: 0%; text-align: center; top: 10%;">
+			<div id="Title" style="transition-timing-function: linear; opacity: 0%; transition-property: opacity;transition-duration: 0.5s;white-space: pre-wrap;">讨  论  中  心</div>
+		</div>
+		<div id="Content" style="font-family: serif;position: absolute;left: 0%; right: 0%; text-align: center; bottom: 20%;
+		transition-timing-function:ease-out; opacity: 0%; transition-property: opacity;transition-duration: 0.5s; font-family:'Segoe UI Symbol',serif;">
+			<div id="TriangleLeft" style="font-size: 64px;transition-timing-function:ease-out;transition-property: left;left: 0%;   
+			position:absolute;top: 0%;transition-duration: 0.25s;">▶</div>
+			<div id="TriangleRight" style="font-size: 64px;transition-timing-function:ease-out;transition-property: right;right: 0%;
+			position:absolute;top: 0%;transition-duration: 0.25s;">◀</div>
+			<div id="ConText" style="font-size: 64px;position:fixed; white-space: pre-wrap;">开  始  讨  论</div>
+		</div>
+		
 </body>

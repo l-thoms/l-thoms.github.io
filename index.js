@@ -60,28 +60,6 @@ function resize()
 			applyCSS("body{zoom:2.5;}","scaleForPhone",true);
 		}
 	}
-	var f = document.getElementById("FFNotice");
-	var ff = document.getElementById("FFFooter");
-	
-	//ff.style.background="#00ffff";
-
-	if(document.documentElement.offsetHeight<=document.documentElement.clientHeight)//页面高度小于视图高度
-	{
-		ff.style.position = "fixed";
-		ff.style.right = "4px";
-		ff.style.left = "4px"
-		ff.style.bottom = "6px";
-	}
-	else
-	{
-		ff.style.position = "relative";
-		ff.style.width = "unset";
-	}
-	if(f.clientWidth>document.documentElement.offsetWidth-document.getElementById("left_").clientWidth-document.getElementById("right_").clientWidth)
-	{
-		ff.style.marginRight = (document.getElementById("right_").clientWidth).toString()+"px";	
-		ff.style.marginLeft = (document.getElementById("left_").clientWidth).toString()+"px";
-	}
 }
 function applyCSS(t,id,isremoved)//添加CSS元素
 {
@@ -127,14 +105,6 @@ function ready()//文档状态
 }
 function animationStopped()//中止动画
 {
-	var rc=document.getElementById('left');
-	rc.style.animationPlayState="running";
-	var rc=document.getElementById('left_');
-	rc.style.animationPlayState="running";
-	var rc=document.getElementById('right');
-	rc.style.animationPlayState="running";
-	var rc=document.getElementById('right_');
-	rc.style.animationPlayState="running";
 	var rc=document.getElementById('dyn');
 	rc.style.animationPlayState="running";
 	var rc=document.getElementById('dyn-content');

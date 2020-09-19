@@ -108,3 +108,19 @@
 	border-color: #005499;
     box-sizing: border-box;
 }
+.menu
+{
+	color: white;
+	text-decoration: unset;
+	background-color: rgba(0, 0, 0, 0);
+	transition: 0.125s linear;
+}
+.menu:hover
+{
+	background-color: rgba(0, 0, 0, 0.125);
+}
+.menu:active
+{
+	background-color: white;
+	color: #B0D282;
+}
