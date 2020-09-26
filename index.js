@@ -9,29 +9,31 @@ function GetRandom(seed)
 	var floatSeed = parseFloat(seed);
 	return Math.abs(Math.abs(Math.pow(floatSeed*1024,3)-Math.floor(Math.pow(floatSeed*1024,3)))*2-1);
 }
+var Scroll = 0;
+var MenuItems;
+var Width=4;
 function load()
 {
 	request();
+	document.body.style.display="";
 	t = setTimeout(function(){
 		var d = document.getElementById("abortAnimation");
 		d.style.visibility="visible";
 		d.style.textAlign="Center";
 		d.style.position="unset";
 		},5000);
-	//document.body.style.backgroundImage="url('https://raw.githubusercontent.com/l-thoms/Thoms-World/master/NewMap-full.svg')";
 	document.body.style.backgroundColor="#FFFFFF";
 	document.onreadystatechange=ready();
-	var width=4;
 	for(var i=0;i<document.getElementsByClassName("menu").length;i++)
 	{
-		width+=document.getElementsByClassName("menu")[i].clientWidth;
+		Width+=document.getElementsByClassName("menu")[i].clientWidth;
 	}
-	document.getElementById("MenuContent").style.width = width.toString()+"px";
 	var currentDay = (new Date().getFullYear()-1)*365.25+(new Date().getMonth()-1)*(365.25/12)+new Date().getDate();
-	var order =parseInt(GetRandom((currentDay/(1969*365.25+1)))*6)+1;
-	//alert(order);
+	var order =parseInt(GetRandom((currentDay/(1969*365.25+1)))*9)+1;
 	document.body.style.backgroundImage="url('./Resources/Background/"+order.toString()+"')";
-	applyCSS(".res::before{background-image:url('./Resources/Background/"+order.toString()+"'); background-color:#FFFFFF}","glassEffect",false);
+	document.getElementById("GlassEffect").innerHTML= ".res::before{background-image:url('./Resources/Background/"+order.toString()+"'); background-color:#FFFFFF}";
+	document.getElementById("GlassEffect").innerHTML+=".rtt::before{background-image:url('./Resources/Background/"+order.toString()+"'); background-color:#FFFFFF}";
+	MenuItems = document.getElementsByClassName("menu");
 	resize();
 }
 function request()
@@ -55,80 +57,121 @@ function resize()
 	var r=document.getElementById('res');//调整亚克力效果
 	var dw= document.documentElement.clientWidth.toString();
 	var dh= document.documentElement.clientHeight.toString();
-	applyCSS(".res::before{"+
+	var autosizeText = ".res::before{"+
 	"top:-"+(r.offsetTop/r.offsetHeight*100).toString()+"%;"+
 	"left:-"+(r.offsetLeft/r.offsetWidth*100).toString()+"%;"+
 	"right:-"+((dw-r.offsetWidth-r.offsetLeft)/r.offsetWidth*100).toString()+"%;"+
 	"bottom:-"+((dh-r.offsetHeight-r.offsetTop)/r.offsetHeight*100).toString()+"%;"+
-	"background-repeat: no-repeat;background-size: cover;background-attachment:fixed;background-position: center;}",
-	"autoSize",true);
+	"background-repeat: no-repeat;background-size: cover;background-attachment:fixed;background-position: center;}";
+	autosizeText= autosizeText.replace("--","");
+	document.getElementById("AutoSize").innerHTML=autosizeText;
+	document.getElementById("AutoSize").innerHTML+=autosizeText.replace("res::","rtt::");
 
-	var u = navigator.userAgent;
-	if(u.indexOf("Android") > -1||u.indexOf("iPhone") > -1)//适配手机页面缩放
+	if(document.body.clientWidth<Width+document.getElementById("Img").width)
 	{
-		if(window.orientation.toString()=="90"||window.orientation.toString()=="-90")
+		document.getElementById("MenuFloat").style.float="";
+		document.getElementById("MenuSide").appendChild(document.getElementById("MenuFloat"));
+		document.getElementById("MenuExplander").style.display="";
+		for(var i =0;i<document.getElementsByClassName("menu").length;i++)
 		{
-			applyCSS("body{zoom:1;}","scaleForPhone",true);
+			document.getElementsByClassName("menu")[i].style.float="none";
+			document.getElementsByClassName("menu")[i].style.justifyContent="left";
+			document.getElementsByClassName("menu")[i].style.width="auto";
 		}
-		else
-		{
-			applyCSS("body{zoom:2.5;}","scaleForPhone",true);
-		}
-	}
-	document.body.clientWidth<document.getElementById("MenuContent").clientWidth+document.getElementById("Img").clientHeight+16?
-	document.getElementById("MenuFloat").style.float="":document.getElementById("MenuFloat").style.float="right";
-	if(document.documentElement.scrollTop>0)
-	{
-		document.getElementById("Menu").style.transform = "scale(0.75) translateX(calc(-100% / 6)) translateY(calc(-16px * 0.75))";
-		document.getElementById("Menu").style.width = "calc(100% / 0.75)";
 	}
 	else
 	{
-		document.getElementById("Menu").style.transform = "";
-		document.getElementById("Menu").style.width = "100%";
-
-	}
-}
-function applyCSS(t,id,isremoved)//添加CSS元素
-{
-	var s=document.createElement('style');
-	s.innerText=t;
-	s.id=id;
-	if(isremoved==true)
-	{
-		try
+		document.getElementById("MenuFloat").style.float="right";
+		document.getElementById("Menu").appendChild(document.getElementById("MenuFloat"));
+		document.getElementById("MenuExplander").style.display="none";
+		for(var i =0;i<document.getElementsByClassName("menu").length;i++)
 		{
-			var e=document.getElementById(id);
-			e.remove();
+			document.getElementsByClassName("menu")[i].style.float="left";
+			document.getElementsByClassName("menu")[i].style.justifyContent="";
+			document.getElementsByClassName("menu")[i].style.width="";
 		}
-		catch(er){};
+		closeMenu();
 	}
-	document.body.appendChild(s);
+	var scrollstate = 0,uscrollstate=0;
+	if(Scroll!=document.documentElement.scrollTop)
+		Scroll<document.documentElement.scrollTop?scrollstate=1:scrollstate=-1;
+	else
+		scrollstate = 0;
+	if(uscrollstate!=scrollstate)
+	{
+		if(Scroll<document.documentElement.scrollTop)
+		{
+			document.getElementById("Menu").style.transform = "scale(0.75) translateX(calc(-100% / 6)) translateY(calc(-16px * 0.75))";
+			document.getElementById("Menu").style.width = "calc(100% / 0.75)";
+			document.getElementById("ReturnToTop").style.visibility = "visible";
+			document.getElementById("ReturnToTop").style.opacity = "1";
+			document.getElementById("ReturnToTop").style.transform="translateY(0px)";
+		}
+		else
+		{
+			document.getElementById("Menu").style.transform = "";
+			document.getElementById("Menu").style.width = "100%";
+			document.getElementById("ReturnToTop").style.opacity = "0";
+			document.getElementById("ReturnToTop").ontransitionend = function(){
+				if(document.getElementById("ReturnToTop").style.opacity=="0")
+					document.getElementById("ReturnToTop").style.visibility = "hidden";
+			}
+			document.getElementById("ReturnToTop").style.transform="translateY(calc(100% + 32px))";
+		}
+	}
+	Scroll = document.documentElement.scrollTop;
+	uscrollstate = scrollstate;
+}
+var IsExpanded = false;
+function closeMenu()
+{
+	IsExpanded = true;
+	expandMenu();
+}
+function expandMenu()
+{
+	if(!IsExpanded)
+	{
+		document.getElementById("MenuSide").style.visibility="";
+		document.getElementById("MenuSide").style.transform="translateX(0%)";
+		document.getElementById("MenuSide").style.transition= "0.25s cubic-bezier(0, 0, 0, 1)";
+		document.getElementById("MenuSideBack").style.transition = "opacity 0.25s cubic-bezier(0,0,0,1)";
+		document.getElementById("MenuSideBack").style.opacity ="1";
+		document.getElementById("MenuSideBack").style.visibility ="";
+	}
+	else
+	{
+		document.getElementById("MenuSide").style.visibility="hidden";
+		document.getElementById("MenuSide").style.transform="translateX(100%)";
+		document.getElementById("MenuSide").style.transition= "";
+		document.getElementById("MenuSideBack").style.transition = "opacity 0.125s linear";
+		document.getElementById("MenuSideBack").style.opacity ="0";
+		document.getElementById("MenuSideBack").ontransitionend = function(){
+			if(document.getElementById("MenuSideBack").style.opacity=="0")
+			document.getElementById("MenuSideBack").style.visibility ="hidden";
+		}
+	}
+	IsExpanded = !IsExpanded;
+}
+var ResizeClock = setInterval(function(){
+	resize();
+},0);
+function topClick()
+{
+	window.scrollTo(0,0);
 }
 function ready()//文档状态
 {
+	var r=document.getElementById('res');
 	if (document.readyState=="complete")
 	{
-		var r=document.getElementById('res');
-		r.style.animationPlayState="running";
-		applyCSS(".res::before{animation-play-state: running;}","",false);
-		applyCSS(".res::after{animation-play-state: running;}","",false);
-		var r=document.getElementById('res-content');
-		r.style.animationPlayState="running";
-		var d = document.getElementById('dyn');
-		dyn.style.animationPlayState="running";
+		animated();
 		clearTimeout(t);
 	}
 	r.addEventListener("animationend",function next()
 	{
 		animationStopped();
-		//var a = Math.ceil(Math.random()*100);
-		//if(a>95) 
-		//{
-		//	var i = document.getElementById("icon");
-		//	i.style.display="inherit";
-		//	i.style.animationPlayState="running";
-		//}
+		clearTimeout(ResizeClock);
 	});
 }
 function animationStopped()//中止动画
@@ -138,16 +181,21 @@ function animationStopped()//中止动画
 	var rc=document.getElementById('dyn-content');
 	rc.style.animationPlayState="running";
 }
-function stopLoading()
+function animated()
 {
 	var r=document.getElementById('res');
 	r.style.animationPlayState="running";
-	applyCSS(".res::before{animation-play-state: running;}","",false);
-	applyCSS(".res::after{animation-play-state: running;}","",false);
+	document.getElementById("CustomCSS").innerHTML=".res::before{animation-play-state: running;}";
+	document.getElementById("CustomCSS").innerHTML+=".res::after{animation-play-state: running;}";
 	var r=document.getElementById('res-content');
 	r.style.animationPlayState="running";
-	var d = document.getElementById('dyn');
+	var dyn = document.getElementById('dyn');
 	dyn.style.animationPlayState="running";
+}
+function stopLoading()
+{
+	var r=document.getElementById('res');
+	animated();
 	r.addEventListener("animationend",function next()
 	{
 		animationStopped();//提前中止动画

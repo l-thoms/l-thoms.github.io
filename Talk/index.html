@@ -38,8 +38,22 @@
 				clearInterval(Interval);
 				AnimationState=3;
 				DisplayContents();
-				setTimeout(() => {
+				setTimeout(function() {
 					document.getElementById("Loading").style.opacity="0";
+					var e = document.createElement("meta");
+					e.name="viewport";
+					e.content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
+					document.head.appendChild(e);
+					document.getElementById("TriangleLeft").style.transition="";
+					document.getElementById("TriangleRight").style.transition="";
+					var u = window.navigator.userAgent.toLowerCase();
+					if(u.indexOf("android")>-1)
+					{
+						for(var i =0;i<document.getElementById("Loading").childElementCount;i++)
+						{
+							document.getElementById("Loading").children[i].style.display="none";
+						}
+					}
 					document.getElementById("Loading").ontransitionend=function()
 					{
 						if(parseInt(document.getElementById("Loading").style.opacity)==0)document.body.removeChild(document.getElementById("Loading"));
@@ -49,12 +63,12 @@
 			}
 		},1);
 		document.getElementById("Title").style.opacity="1";
-		setTimeout(() => {
+		setTimeout(function() {
 			Sleep(500);
 			document.getElementById("Content").style.opacity="1";
 			AnimationState = 1
-			setTimeout(() => {
-				Interval = setInterval(() => {
+			setTimeout(function() {
+				Interval = setInterval(function() {
 					if(AnimationState==1)
 					{
 						AnimationState=2;
@@ -94,21 +108,7 @@
 	}
 	function Body_Resize()
 	{
-		var u = navigator.userAgent;
-		if((u.indexOf("Android") > -1||u.indexOf("iPhone") > -1)&&AnimationState==3)//适配手机页面缩放
-		{
-			if(window.orientation.toString()=="90"||window.orientation.toString()=="-90")
-			{
-				applyCSS("body{zoom:1;}","scaleForPhone",true);
-				document.documentElement.style.margin = "0 auto";
-			}
-			else
-			{
-				applyCSS("body{zoom:2.5;}","scaleForPhone",true);
-				document.documentElement.style.margin = "unset";
-			}
-		}
-		setInterval(() => {
+		setInterval(function(){
 		var footer = document.getElementById("footer")//底部文字
 		if(document.documentElement.offsetHeight<document.documentElement.clientHeight)//页面高度小于窗体高度
 		{
@@ -132,22 +132,6 @@
 		}, 0);
 	}
 	
-	function applyCSS(t,id,isremoved)//添加CSS元素
-	{
-		var s=document.createElement('style');
-		s.innerText=t;
-		s.id=id;
-		if(isremoved==true)
-		{
-			try
-			{
-				var e=document.getElementById(id);
-				e.remove();
-			}
-			catch(er){};
-		}
-		document.body.appendChild(s);
-	}
 </script>
 
 <style type="text/css">
@@ -206,7 +190,7 @@
 			<div id="TriangleLeft" style="font-size: 64px;transition-timing-function:ease-out;transition-property: left;left: 0%;   
 			position:absolute;top: 0%;transition-duration: 0.25s;">▶</div>
 			<div id="TriangleRight" style="font-size: 64px;transition-timing-function:ease-out;transition-property: right;right: 0%;
-			position:absolute;top: 0%;transition-duration: 0.25s;">◀</div>
+			position:absolute;top: 0%;transition-duration: 0.25s; transform: translateX(-12px);">◀</div>
 			<div id="ConText" style="font-size: 64px;position:fixed; white-space: pre-wrap;">开  始  讨  论</div>
 		</div>
 		

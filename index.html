@@ -1,48 +1,65 @@
 <!DOCTYPE html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<title>
 		我的丅站
 	</title>
 	<link rel="icon" href="./Resources/Head.ico" type="image/x-icon"/>
 </head>
 
-<body onload="load()" onresize="resize()" onreadystatechange="ready()" onscroll="resize()" 
+<body onload="load()" onresize="resize()" onreadystatechange="ready()" onscroll="resize();" 
 	style="background-size: cover; background-repeat: no-repeat;background-position: center;background-attachment:fixed;
-	text-align: center; height:100%;font-family:'思源黑体 CN','思源黑体','Noto sans cjk sc'; overflow-x: hidden;">
+	text-align: center; height:100%;font-family:'思源黑体 CN','思源黑体','Noto sans cjk sc'; overflow-x: hidden; display: none;">
 	<!--CSS FILE-->
 	<link rel="stylesheet" href="index.css"/>
+	<link href="./Resources/Material_Icons.css" rel="stylesheet">
+	<style id="GlassEffect"></style>
+	<style id="AutoSize"></style>
+	<style id="CustomCSS"></style>
 	<!--JS FILE-->
 	<script src="index.js"></script>
 	<!--CONTENT-->
-	<div id="Menu" style="height: 64px; transition: height 0.25s ease-in-out; background-color: #B0D282; top: 0%; width: 100%;left: 0%;position:fixed; 
-	box-shadow:0px -6px 6px 6px rgba(0,0,0,0.5); z-index: 2147483647; overflow-x: auto; overflow-y: hidden; white-space: nowrap; transition: 0.25s cubic-bezier(0, 0, 0, 1);">
+	<div id="Menu" style="height: 64px;background-color: #B0D282; top: 0%; width: 100%;left: 0%;position:fixed; 
+	box-shadow:0px -6px 6px 6px rgba(0,0,0,0.5); z-index: 3; overflow-x: auto; overflow-y: hidden; white-space: nowrap; transition: 0.25s cubic-bezier(0, 0, 0, 1);">
 		<a  style="height: 64px; float: left; margin-top: 0px;" href="">
-			<img id="Img" style="height: 42px; margin-top: 11px; margin-left: 11px; display: flex; align-items: center; justify-items: center;" src="./Resources/Thoms.svg"/>
+			<img id="Img" style="height: 36px; margin-top: 15px; margin-left: 14px; display: flex; align-items: center; justify-items: center;" src="./Resources/Thoms2.svg"/>
 		</a>
-		<div id="MenuFloat" style="float: right;">
-		<div id="MenuContent" style="display: inline-block;position: relative;">
-			<div >
-				<a href="https://space.bilibili.com/196422792" style="float: left;font-size: 12pt; height: 64px; padding-left: 12pt; padding-right: 12pt; align-items: center; display: flex; 	justify-content: center;" class="menu">
-					创作展示
-				</a>
-				<a href="./Talk" style="float: left;font-size: 12pt; height: 64px;  padding-left: 12pt; padding-right: 12pt;align-items: center; display: flex; justify-content: center;" 	class="menu">
-					讨论中心
-				</a>
-				<a href="./WhyFirefox.html" style="float: left;font-size: 12pt; height: 64px; padding-left: 12pt; padding-right: 12pt;align-items: center; display: flex; justify-content: 	center;"
-				class="menu">
-					为什么用火狐
-				</a>
-				<a href="./WhyQuark.html" style="float: left;font-size: 12pt; height: 64px;  padding-left: 12pt; padding-right: 12pt;align-items: center; display: flex; justify-content: 	center;"
-				class="menu">
-					为什么用夸克
-				</a>
+		<div class="menu-operator" style="float: none; justify-content: left; width: auto; width: fit-content; float: right; display: none;" onclick="expandMenu();" id="MenuExplander">
+			<div class="material-icons" style="font-size: 36px;-moz-transform: translateY(2px);">menu</div>
+		</div>
+		<div id="MenuFloat" style="float: right; width: fit-content;">
+			<div id="MenuContent">
+				<div>
+					<a href="https://space.bilibili.com/196422792" class="menu">
+						创作展示
+					</a>
+					<a href="./Talk" class="menu">
+						讨论中心
+					</a>
+					<a href="./WhyFirefox.html" class="menu">
+						为什么用火狐
+					</a>
+					<a href="./WhyQuark.html" class="menu">
+						为什么用夸克
+					</a>
+				</div>
 			</div>
 		</div>
+	</div>
+	<div id="MenuSideBack" style="top: 0px; left: 0px; right: 0px; bottom: 0px; position: fixed;background-color: rgba(0,0,0,0.5); z-index: 4; transition: opacity 0.25s cubic-bezier(0,0,0,1); visibility: hidden; opacity: 0;" onclick="expandMenu();"></div>
+	<div id="MenuSide" style="float: right; position:fixed; background-color: #B0D282; box-shadow: 6px 0px 6px 6px rgba(0,0,0,0.5);z-index:6; right: 0px; top: 0px; bottom: 0px;visibility: hidden; overflow-y: auto; overflow-x: hidden; transform: translateX(100%);">
+		<div class="menu-operator" style="float: none; justify-content: left; width: auto;" id="MenuBack" onclick="expandMenu();">
+			<div class="material-icons" style="font-size: 36px;-moz-transform: translateY(2px);">arrow_back</div>
 		</div>
 	</div>
-	<div style="height: 72px;"></div>
-	<div id="abortAnimation" style="visibility: hidden;  z-index: 10;position: fixed;">
+	<div id="ReturnToTop" class="rtt" style="position: fixed; z-index: 5; border-radius: 100%; height: 32px; width: 32px; right: 16px; bottom: 32px;visibility: hidden; transition: cubic-bezier(0,0,0,1) 0.25s; transform: translateY(calc(100% + 32px)); opacity: 0;" onclick="topClick()">
+		<div class="material-icons" style="font-size: 32px; -moz-transform:translateY(2px); ">
+			arrow_upward
+		</div>
+	</div>
+	<div style="height: 68px;"></div>
+	<div id="abortAnimation" style="visibility: hidden;  z-index: 2;position: fixed;">
 		<a href="javascript:void(0)" onclick="stopLoading()">加载过慢?点击中断加载</a>
 	</div>
 	<div class="res" id="res" style=
