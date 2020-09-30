@@ -13,7 +13,6 @@
 		style="background-size: cover; background-repeat: no-repeat;background-position: center;background-attachment:fixed;
 		text-align: center; height:100%;font-family:'思源黑体 CN','思源黑体','Noto sans cjk sc'; overflow-x: hidden; display: none;">
 		<!--CSS FILE-->
-		<link rel="stylesheet" href="index.css"/>
 		<style id="CustomCSS"></style>
 		<link id="MaterialType" rel="stylesheet">
 		<!--CONTENT-->
@@ -47,7 +46,6 @@
 				content:'';
 				position:absolute;
 				top:0;right:0;bottom:0;left:0;
-				background: url(./Resources/Noise);
 				filter: opacity(0.08);
 				z-index: -1;
 				animation-name:mix-after;
@@ -339,7 +337,7 @@ function load()
 					{
 						depthCount++;
 					}
-					if(depthCount==Depth)
+					if(depthCount==Depth-1)
 					{
 						beginIndex=i;
 						break;
