@@ -11,7 +11,8 @@ function GetRandom(seed)
 }
 var Scroll = 0;
 var MenuItems;
-var Width=4;
+var Width=0;
+var Order;
 function load()
 {
 	request();
@@ -29,10 +30,8 @@ function load()
 		Width+=document.getElementsByClassName("menu")[i].clientWidth;
 	}
 	var currentDay = (new Date().getFullYear()-1)*365.25+(new Date().getMonth()-1)*(365.25/12)+new Date().getDate();
-	var order =parseInt(GetRandom((currentDay/(1969*365.25+1)))*9)+1;
-	document.body.style.backgroundImage="url('./Resources/Background/"+order.toString()+"')";
-	document.getElementById("GlassEffect").innerHTML= ".res::before{background-image:url('./Resources/Background/"+order.toString()+"'); background-color:#FFFFFF}";
-	document.getElementById("GlassEffect").innerHTML+=".rtt::before{background-image:url('./Resources/Background/"+order.toString()+"'); background-color:#FFFFFF}";
+	Order =parseInt(GetRandom((currentDay/(1969*365.25+1)))*9)+1;
+	document.body.style.backgroundImage="url('./Resources/Background/"+Order.toString()+"')";
 	MenuItems = document.getElementsByClassName("menu");
 	resize();
 }
@@ -92,6 +91,7 @@ function resize()
 		}
 		closeMenu();
 	}
+
 	var scrollstate = 0,uscrollstate=0;
 	if(Scroll!=document.documentElement.scrollTop)
 		Scroll<document.documentElement.scrollTop?scrollstate=1:scrollstate=-1;
@@ -121,6 +121,8 @@ function resize()
 	}
 	Scroll = document.documentElement.scrollTop;
 	uscrollstate = scrollstate;
+	document.getElementById("GlassEffect").innerHTML= ".res::before,.rtt::before{background-image:url('./Resources/Background/"+Order.toString()+"'); background-color:#FFFFFF;"+
+	"filter:blur("+(document.getElementById("res").clientWidth/640*12).toString()+"px) saturate(2);}";
 }
 var IsExpanded = false;
 function closeMenu()
