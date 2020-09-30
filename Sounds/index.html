@@ -163,14 +163,17 @@ function load()
 				document.getElementById("MaterialType").href = getRoot()+"/Resources/Material_Icons.css";
 				document.body.style.backgroundColor="#FFFFFF";
 				document.onreadystatechange=ready();
+				var scount=0,nameBegin=0,nameEnd=0;
 				for(var i = window.location.href.length-1;i>=0;i--)
 				{
 					if(window.location.href[i]=="/")
 					{
-						document.getElementById("Title").innerText = window.location.href.substring(i+1,window.location.href.length);
-						break;
+						scount++;
+						if(scount==1)nameEnd=i;
+						if(scount==2)nameBegin=i;
 					}
 				}
+				document.getElementById("Title").innerText=window.location.href.substring(nameBegin+1,nameEnd);
 				document.body.style.display="";
 				MenuItems = document.getElementsByClassName("menu");
 				for(var i=0;i<MenuItems.length;i++)
@@ -331,13 +334,13 @@ function load()
 			function getRoot()
 			{
 				var depthCount=0;beginIndex=0;
-				for(var i = window.location.href.length-2;i>=0;i--)
+				for(var i = window.location.href.length-1;i>=0;i--)
 				{
 					if(window.location.href[i]=="/")
 					{
 						depthCount++;
 					}
-					if(depthCount==Depth-1)
+					if(depthCount==Depth)
 					{
 						beginIndex=i;
 						break;
