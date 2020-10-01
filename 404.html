@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title id="Title">
+            404
+        </title>
+        <meta http-equiv="Content-type" content="text/html;charset=utf-8"/>
+        <meta name="viewport" content="width=device-width, minium-scale=1, initial-scale=1, user-scalabe=no"/>
+    </head>
+    <body onload="load()" onresize="resize()">
+        <script type="text/javascript">
+            var Four = ["4","四","肆","Four","４"];
+            var Zero = ["0","零","〇","Zero","０"];
+            function load()
+            {
+                document.getElementById("404Content").style.opacity="1";
+                setInterval(()=>{
+                    document.getElementById("404Content").innerText=Four[parseInt(Math.random()*5)]+Zero[parseInt(Math.random()*5)]+Four[parseInt(Math.random()*5)];
+                    var color = parseInt(Math.random()*256).toString();
+                   document.getElementById("404Content").style.color="rgb("+color+","+color+","+color+")";
+                },0);
+                resize();
+            }
+            function returnMain()
+            {
+                if(window.location.href.toLowerCase().indexOf("github")>-1)
+                    window.location.href="https://l-thoms.github.io";
+                else
+                    window.location.href="https://l-thoms.gitee.io/Website";
+            }
+            function resize()
+            {
+                document.getElementById("404Content").style.fontSize=(document.body.clientWidth/1920*240).toString()+"px";
+            }
+        </script>
+        <div style="left: 50%; transform: translateX(-50%) translateY(-50%); position: fixed; top: 50%; text-align: center;white-space: nowrap; ">
+            <div id="404Content" style="font-size: 240px;transition: opacity 2s linear;opacity: 0; overflow: hidden;">404</div><br>
+            <div style="font-size: 12pt;">不好意思，你走错了。
+                <a href="javascript:void(0)" onclick="returnMain()">返回首页</a>
+            </div>
+        </div>   
+    </body>
+</html>
