@@ -9,16 +9,16 @@
     </head>
     <body onload="load()" onresize="resize()">
         <script type="text/javascript">
-            var Four = ["4","四","肆","Four","４"];
-            var Zero = ["0","零","〇","Zero","０"];
+            var Four = ["4","四","肆","Four","４","sì"];
+            var Zero = ["0","零","〇","Zero","０","líng"];
             function load()
             {
                 document.getElementById("404Content").style.opacity="1";
                 setInterval(()=>{
-                    document.getElementById("404Content").innerText=Four[parseInt(Math.random()*5)]+Zero[parseInt(Math.random()*5)]+Four[parseInt(Math.random()*5)];
+                    document.getElementById("404Content").innerText=Four[parseInt(Math.random()*6)]+Zero[parseInt(Math.random()*6)]+Four[parseInt(Math.random()*6)];
                     var color = parseInt(Math.random()*256).toString();
                    document.getElementById("404Content").style.color="rgb("+color+","+color+","+color+")";
-                },0);
+                },1);
                 resize();
             }
             function returnMain()
