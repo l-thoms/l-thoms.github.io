@@ -9,16 +9,17 @@
     </head>
     <body onload="load()" onresize="resize()">
         <script type="text/javascript">
-            var Four = ["4","四","肆","Four","４","sì"];
-            var Zero = ["0","零","〇","Zero","０","líng"];
+            var Four = ["4","四","肆","Four","４","sì","亖"];
+            var Zero = ["0","零","〇","Zero","０","líng","洞"];
             function load()
             {
                 document.getElementById("404Content").style.opacity="1";
                 setInterval(()=>{
-                    document.getElementById("404Content").innerText=Four[parseInt(Math.random()*6)]+Zero[parseInt(Math.random()*6)]+Four[parseInt(Math.random()*6)];
+                    document.getElementById("404Content").innerText=Four[parseInt(Math.random()*7)]+Zero[parseInt(Math.random()*7)]+Four[parseInt(Math.random()*7)];
                     var color = parseInt(Math.random()*256).toString();
-                   document.getElementById("404Content").style.color="rgb("+color+","+color+","+color+")";
-                },1);
+                    document.getElementById("404Content").style.color="rgb("+color+","+color+","+color+")";
+                    window.navigator.vibrate(1000);
+                },0);
                 resize();
             }
             function returnMain()
@@ -33,7 +34,7 @@
                 document.getElementById("404Content").style.fontSize=(document.body.clientWidth/1920*240).toString()+"px";
             }
         </script>
-        <div style="left: 50%; transform: translateX(-50%) translateY(-50%); position: fixed; top: 50%; text-align: center;white-space: nowrap; ">
+        <div style="left: 50%; transform: translateX(-50%) translateY(-50%); position: fixed; top: 50%; text-align: center;white-space: nowrap; font-family: sans-serif;">
             <div id="404Content" style="font-size: 240px;transition: opacity 2s linear;opacity: 0; overflow: hidden;">404</div><br>
             <div style="font-size: 12pt;">不好意思，你走错了。
                 <a href="javascript:void(0)" onclick="returnMain()">返回首页</a>
