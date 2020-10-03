@@ -18,7 +18,7 @@
                     document.getElementById("404Content").innerText=Four[parseInt(Math.random()*7)]+Zero[parseInt(Math.random()*7)]+Four[parseInt(Math.random()*7)];
                     var color = parseInt(Math.random()*256).toString();
                     document.getElementById("404Content").style.color="rgb("+color+","+color+","+color+")";
-                    window.navigator.vibrate(1000);
+                    if(window.navigator.userAgent.toLowerCase().indexOf("firefox")==-1)window.navigator.vibrate(1000);//手机火狐会弹窗且取消难
                 },0);
                 resize();
             }
