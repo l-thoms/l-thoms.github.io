@@ -277,6 +277,8 @@ function load()
 					document.getElementById("MenuSideBack").style.transition = "opacity 0.25s cubic-bezier(0,0,0,1)";
 					document.getElementById("MenuSideBack").style.opacity ="1";
 					document.getElementById("MenuSideBack").style.visibility ="";
+					document.getElementById("MenuSide").style.pointerEvents="";
+					document.getElementById("MenuSideBack").style.pointerEvents="";
 				}
 				else
 				{
@@ -289,6 +291,8 @@ function load()
 					if(document.getElementById("MenuSideBack").style.opacity=="0")
 						document.getElementById("MenuSideBack").style.visibility ="hidden";
 					}
+					document.getElementById("MenuSide").style.pointerEvents="none";
+					document.getElementById("MenuSideBack").style.pointerEvents="none";
 				}
 				IsExpanded = !IsExpanded;
 			}
@@ -394,7 +398,7 @@ function load()
 				style="animation-name:mixdiv; animation-duration: 0.5s; animation-play-state: paused; height: 100%;
 				width:640px; max-width: 100%;">
 				<a href="javascript:window.history.back()">...</a><a href="javascript:void(0)" onclick="getPath('Chinese.zip')"><p></p>Chinese.zip</a>
-<a href="javascript:void(0)" onclick="getPath('F3AU-MLY.7z')"><p></p>F3AU-MLY.7z</a>
+<a href="javascript:void(0)" onclick="getPath('学生发展中心.7z')"><p></p>学生发展中心.7z</a>
 <a href="javascript:void(0)" onclick="getPath('蔡徐坤.zip')"><p></p>蔡徐坤.zip</a>
 </div>
 		</div>

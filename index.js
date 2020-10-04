@@ -54,15 +54,10 @@ function request()
 function resize()
 {
 	var r=document.getElementById('res');//调整亚克力效果
-	var dw= document.documentElement.clientWidth.toString();
-	var dh= document.documentElement.clientHeight.toString();
 	var autosizeText = ".res::before{"+
-	"top:-"+(r.offsetTop/r.offsetHeight*100).toString()+"%;"+
-	"left:-"+(r.offsetLeft/r.offsetWidth*100).toString()+"%;"+
-	"right:-"+((dw-r.offsetWidth-r.offsetLeft)/r.offsetWidth*100).toString()+"%;"+
-	"bottom:-"+((dh-r.offsetHeight-r.offsetTop)/r.offsetHeight*100).toString()+"%;"+
+	"top:"+-(r.offsetTop/r.offsetHeight*100).toString()+"%;"+
+	"left:"+-(r.offsetLeft/r.offsetWidth*100).toString()+"%;right:0%;bottom:0%;"+
 	"background-repeat: no-repeat;background-size: cover;background-attachment:fixed;background-position: center;}";
-	autosizeText= autosizeText.replace("--","");
 	document.getElementById("AutoSize").innerHTML=autosizeText;
 	document.getElementById("AutoSize").innerHTML+=autosizeText.replace("res::","rtt::");
 
@@ -140,6 +135,8 @@ function expandMenu()
 		document.getElementById("MenuSideBack").style.transition = "opacity 0.25s cubic-bezier(0,0,0,1)";
 		document.getElementById("MenuSideBack").style.opacity ="1";
 		document.getElementById("MenuSideBack").style.visibility ="";
+		document.getElementById("MenuSide").style.pointerEvents="";
+		document.getElementById("MenuSideBack").style.pointerEvents="";
 	}
 	else
 	{
@@ -150,8 +147,10 @@ function expandMenu()
 		document.getElementById("MenuSideBack").style.opacity ="0";
 		document.getElementById("MenuSideBack").ontransitionend = function(){
 			if(document.getElementById("MenuSideBack").style.opacity=="0")
-			document.getElementById("MenuSideBack").style.visibility ="hidden";
+				document.getElementById("MenuSideBack").style.visibility ="hidden";
 		}
+		document.getElementById("MenuSide").style.pointerEvents="none";
+		document.getElementById("MenuSideBack").style.pointerEvents="none";
 	}
 	IsExpanded = !IsExpanded;
 }
