@@ -158,246 +158,248 @@
 
 var Depth = 3;
 function load()
+	{
+		request();
+		document.getElementById("Img").src = getRoot()+"/Resources/Thoms2.svg";
+		document.getElementById("MaterialType").href = getRoot()+"/Resources/Material_Icons.css";
+		document.body.style.backgroundColor="#FFFFFF";
+		document.onreadystatechange=ready();
+		var scount=0,nameBegin=0,nameEnd=0;
+		for(var i = window.location.href.length-1;i>=0;i--)
+		{
+			if(window.location.href[i]=="/")
 			{
-				request();
-				document.getElementById("Img").src = getRoot()+"/Resources/Thoms2.svg";
-				document.getElementById("MaterialType").href = getRoot()+"/Resources/Material_Icons.css";
-				document.body.style.backgroundColor="#FFFFFF";
-				document.onreadystatechange=ready();
-				var scount=0,nameBegin=0,nameEnd=0;
-				for(var i = window.location.href.length-1;i>=0;i--)
-				{
-					if(window.location.href[i]=="/")
-					{
-						scount++;
-						if(scount==1)nameEnd=i;
-						if(scount==2)nameBegin=i;
-					}
-				}
-				document.getElementById("Title").innerText=window.location.href.substring(nameBegin+1,nameEnd);
-				document.body.style.display="";
-				MenuItems = document.getElementsByClassName("menu");
-				for(var i=0;i<MenuItems.length;i++)
-				{
-					Width+=MenuItems[i].clientWidth;
-				}
-				document.body.style.display="none";
-				document.getElementById("MaterialType").onload = function(){ 
-					document.body.style.display="";
-					resize();
-				}
+				scount++;
+				if(scount==1)nameEnd=i;
+				if(scount==2)nameBegin=i;
 			}
-			function request()
+		}
+		document.getElementById("Title").innerText=window.location.href.substring(nameBegin+1,nameEnd);
+		document.body.style.display="";
+		MenuItems = document.getElementsByClassName("menu");
+		for(var i=0;i<MenuItems.length;i++)
+		{
+			Width+=MenuItems[i].clientWidth;
+		}
+		document.body.style.display="none";
+		document.getElementById("MaterialType").onload = function(){ 
+			document.body.style.display="";
+			resize();
+		}
+	}
+	function request()
+	{
+		var url = location.search;
+		if(url.indexOf("?")!=-1)
+		{
+			var argument = url.substring(1);
+			switch(argument.toLowerCase())
 			{
-				var url = location.search;
-				if(url.indexOf("?")!=-1)
-				{
-					var argument = url.substring(1);
-					switch(argument.toLowerCase())
-					{
-						case "surf":window.location.href="https://surf.jackbuehner.com";break;
-						case "fontviewer":window.location.href="./Resources/Fontviewer";break;
-						case "snake":window.location.href="./Resources/Snake.zip";break;
-						case "yueping":
-						case "jyutping":window.location.href="http://www.iso10646hk.net/jp/database/index.jsp";break;
-					}
+				case "surf":window.location.href="https://surf.jackbuehner.com";break;
+				case "fontviewer":window.location.href="./Resources/Fontviewer";break;
+				case "snake":window.location.href="./Resources/Snake.zip";break;
+				case "yueping":
+				case "jyutping":window.location.href="http://www.iso10646hk.net/jp/database/index.jsp";break;
+			}
+		}
+	}
+	window.onscroll = function(){resize();};
+	function resize()
+	{
+		if(document.body.clientWidth<Width+document.getElementById("Img").width)
+		{
+			document.getElementById("MenuFloat").style.float="";
+			document.getElementById("MenuSide").appendChild(document.getElementById("MenuFloat"));
+			document.getElementById("MenuExplander").style.display="";
+			for(var i =0;i<document.getElementsByClassName("menu").length;i++)
+			{
+				document.getElementsByClassName("menu")[i].style.float="none";
+				document.getElementsByClassName("menu")[i].style.justifyContent="left";
+				document.getElementsByClassName("menu")[i].style.width="auto";
+			}
+		}
+		else
+		{
+			document.getElementById("MenuFloat").style.float="right";
+			document.getElementById("Menu").appendChild(document.getElementById("MenuFloat"));
+			document.getElementById("MenuExplander").style.display="none";
+			for(var i =0;i<document.getElementsByClassName("menu").length;i++)
+			{
+				document.getElementsByClassName("menu")[i].style.float="left";
+				document.getElementsByClassName("menu")[i].style.justifyContent="";
+				document.getElementsByClassName("menu")[i].style.width="";
+			}
+			closeMenu();
+		}
+	
+		var scrollstate = 0,uscrollstate=0;
+		if(Scroll!=window.scrollY)
+			Scroll<window.scrollY?scrollstate=1:scrollstate=-1;
+		else
+			scrollstate = 0;
+		if(window.navigator.userAgent.toLowerCase().indexOf("edge")>1)document.getElementById("Menu").style.transition="";
+		if(uscrollstate!=scrollstate)
+		{
+			if(Scroll<window.scrollY)
+			{
+				document.getElementById("Menu").style.transform = "scale(0.75) translateX(calc(-100% / 6)) translateY(calc(-16px * 0.75))";
+				document.getElementById("Menu").style.width = "calc(100% / 0.75)";
+				document.getElementById("ReturnToTop").style.visibility = "visible";
+				document.getElementById("ReturnToTop").style.opacity = "1";
+				document.getElementById("ReturnToTop").style.transform="translateY(0px)";
+			}
+			else
+			{
+				document.getElementById("Menu").style.transform = "";
+				document.getElementById("Menu").style.width = "100%";
+				document.getElementById("ReturnToTop").style.opacity = "0";
+				document.getElementById("ReturnToTop").ontransitionend = function(){
+					if(document.getElementById("ReturnToTop").style.opacity=="0")
+						document.getElementById("ReturnToTop").style.visibility = "hidden";
 				}
+				document.getElementById("ReturnToTop").style.transform="translateY(calc(100% + 32px))";
 			}
-			function resize()
+		}
+		Scroll = window.scrollY;
+		uscrollstate = scrollstate;
+	}
+	var IsExpanded = false;
+	function closeMenu()
+	{
+		IsExpanded = true;
+		expandMenu();
+	}
+	function expandMenu()
+	{
+		if(!IsExpanded)
+		{
+			document.getElementById("MenuSide").style.visibility="";
+			document.getElementById("MenuSide").style.transform="translateX(0%)";
+			document.getElementById("MenuSide").style.transition= "0.25s cubic-bezier(0, 0, 0, 1)";
+			document.getElementById("MenuSideBack").style.transition = "opacity 0.25s cubic-bezier(0,0,0,1)";
+			document.getElementById("MenuSideBack").style.opacity ="1";
+			document.getElementById("MenuSideBack").style.visibility ="";
+			document.getElementById("MenuSide").style.pointerEvents="";
+			document.getElementById("MenuSideBack").style.pointerEvents="";
+		}
+		else
+		{
+			document.getElementById("MenuSide").style.visibility="hidden";
+			document.getElementById("MenuSide").style.transform="translateX(100%)";
+			document.getElementById("MenuSide").style.transition= "";
+			document.getElementById("MenuSideBack").style.transition = "opacity 0.125s linear";
+			document.getElementById("MenuSideBack").style.opacity ="0";
+			document.getElementById("MenuSideBack").ontransitionend = function(){
+			if(document.getElementById("MenuSideBack").style.opacity=="0")
+				document.getElementById("MenuSideBack").style.visibility ="hidden";
+			}
+			document.getElementById("MenuSide").style.pointerEvents="none";
+			document.getElementById("MenuSideBack").style.pointerEvents="none";
+		}
+		IsExpanded = !IsExpanded;
+	}
+	var ResizeClock = setInterval(function(){
+		resize();
+	},0);
+	function topClick()
+	{
+		window.location.href="#";
+	}
+	function ready()//文档状态
+	{
+		var r=document.getElementById('res');
+		if (document.readyState=="complete")
+		{
+			animated();
+			clearTimeout(t);
+		}
+		r.addEventListener("animationend",function next()
+		{
+			clearTimeout(ResizeClock);
+		});
+	}
+	function animated()
+	{
+		var r=document.getElementById('res');
+		r.style.animationPlayState="running";
+		document.getElementById("CustomCSS").innerHTML=".res::before{animation-play-state: running;}";
+		document.getElementById("CustomCSS").innerHTML+=".res::after{animation-play-state: running;}";
+		var r=document.getElementById('res-content');
+		r.style.animationPlayState="running";
+	}
+	function stopLoading()
+	{
+		animated();
+	}
+	function getPath(path)
+	{
+		
+		if(window.location.href.toLowerCase().indexOf("gitee")>0)
+		window.location.href="https://gitee.com/l-thoms/Website/raw/master"+window.location.href.substring(getRoot().length,window.location.href.length)+path;
+		else window.location.href = window.location.href+path;
+	}
+	function getRoot()
+	{
+		var depthCount=0;beginIndex=0;
+		for(var i = window.location.href.length-1;i>=0;i--)
+		{
+			if(window.location.href[i]=="/")
 			{
-				if(document.body.clientWidth<Width+document.getElementById("Img").width)
-				{
-					document.getElementById("MenuFloat").style.float="";
-					document.getElementById("MenuSide").appendChild(document.getElementById("MenuFloat"));
-					document.getElementById("MenuExplander").style.display="";
-					for(var i =0;i<document.getElementsByClassName("menu").length;i++)
-					{
-						document.getElementsByClassName("menu")[i].style.float="none";
-						document.getElementsByClassName("menu")[i].style.justifyContent="left";
-						document.getElementsByClassName("menu")[i].style.width="auto";
-					}
-				}
-				else
-				{
-					document.getElementById("MenuFloat").style.float="right";
-					document.getElementById("Menu").appendChild(document.getElementById("MenuFloat"));
-					document.getElementById("MenuExplander").style.display="none";
-					for(var i =0;i<document.getElementsByClassName("menu").length;i++)
-					{
-						document.getElementsByClassName("menu")[i].style.float="left";
-						document.getElementsByClassName("menu")[i].style.justifyContent="";
-						document.getElementsByClassName("menu")[i].style.width="";
-					}
-					closeMenu();
-				}
-			
-				var scrollstate = 0,uscrollstate=0;
-				if(Scroll!=document.documentElement.scrollTop)
-					Scroll<document.documentElement.scrollTop?scrollstate=1:scrollstate=-1;
-				else
-					scrollstate = 0;
-				if(uscrollstate!=scrollstate)
-				{
-					if(Scroll<document.documentElement.scrollTop)
-					{
-						document.getElementById("Menu").style.transform = "scale(0.75) translateX(calc(-100% / 6)) translateY(calc(-16px * 0.75))";
-						document.getElementById("Menu").style.width = "calc(100% / 0.75)";
-						document.getElementById("ReturnToTop").style.visibility = "visible";
-						document.getElementById("ReturnToTop").style.opacity = "1";
-						document.getElementById("ReturnToTop").style.transform="translateY(0px)";
-					}
-					else
-					{
-						document.getElementById("Menu").style.transform = "";
-						document.getElementById("Menu").style.width = "100%";
-						document.getElementById("ReturnToTop").style.opacity = "0";
-						document.getElementById("ReturnToTop").ontransitionend = function(){
-							if(document.getElementById("ReturnToTop").style.opacity=="0")
-								document.getElementById("ReturnToTop").style.visibility = "hidden";
-						}
-						document.getElementById("ReturnToTop").style.transform="translateY(calc(100% + 32px))";
-					}
-				}
-				Scroll = document.documentElement.scrollTop;
-				uscrollstate = scrollstate;
+				depthCount++;
 			}
-			var IsExpanded = false;
-			function closeMenu()
+			if(depthCount==Depth)
 			{
-				IsExpanded = true;
-				expandMenu();
+				beginIndex=i;
+				break;
 			}
-			function expandMenu()
-			{
-				if(!IsExpanded)
-				{
-					document.getElementById("MenuSide").style.visibility="";
-					document.getElementById("MenuSide").style.transform="translateX(0%)";
-					document.getElementById("MenuSide").style.transition= "0.25s cubic-bezier(0, 0, 0, 1)";
-					document.getElementById("MenuSideBack").style.transition = "opacity 0.25s cubic-bezier(0,0,0,1)";
-					document.getElementById("MenuSideBack").style.opacity ="1";
-					document.getElementById("MenuSideBack").style.visibility ="";
-					document.getElementById("MenuSide").style.pointerEvents="";
-					document.getElementById("MenuSideBack").style.pointerEvents="";
-				}
-				else
-				{
-					document.getElementById("MenuSide").style.visibility="hidden";
-					document.getElementById("MenuSide").style.transform="translateX(100%)";
-					document.getElementById("MenuSide").style.transition= "";
-					document.getElementById("MenuSideBack").style.transition = "opacity 0.125s linear";
-					document.getElementById("MenuSideBack").style.opacity ="0";
-					document.getElementById("MenuSideBack").ontransitionend = function(){
-					if(document.getElementById("MenuSideBack").style.opacity=="0")
-						document.getElementById("MenuSideBack").style.visibility ="hidden";
-					}
-					document.getElementById("MenuSide").style.pointerEvents="none";
-					document.getElementById("MenuSideBack").style.pointerEvents="none";
-				}
-				IsExpanded = !IsExpanded;
-			}
-			var ResizeClock = setInterval(function(){
-				resize();
-			},0);
-			function topClick()
-			{
-				window.location.href="#";
-			}
-			function ready()//文档状态
-			{
-				var r=document.getElementById('res');
-				if (document.readyState=="complete")
-				{
-					animated();
-					clearTimeout(t);
-				}
-				r.addEventListener("animationend",function next()
-				{
-					clearTimeout(ResizeClock);
-				});
-			}
-			function animated()
-			{
-				var r=document.getElementById('res');
-				r.style.animationPlayState="running";
-				document.getElementById("CustomCSS").innerHTML=".res::before{animation-play-state: running;}";
-				document.getElementById("CustomCSS").innerHTML+=".res::after{animation-play-state: running;}";
-				var r=document.getElementById('res-content');
-				r.style.animationPlayState="running";
-			}
-			function stopLoading()
-			{
-				animated();
-			}
-			function getPath(path)
-			{
-				
-				if(window.location.href.toLowerCase().indexOf("gitee")>0)
-				window.location.href="https://gitee.com/l-thoms/Website/raw/master"+window.location.href.substring(getRoot().length,window.location.href.length)+path;
-				else window.location.href = window.location.href+path;
-			}
-			function getRoot()
-			{
-				var depthCount=0;beginIndex=0;
-				for(var i = window.location.href.length-1;i>=0;i--)
-				{
-					if(window.location.href[i]=="/")
-					{
-						depthCount++;
-					}
-					if(depthCount==Depth)
-					{
-						beginIndex=i;
-						break;
-					}
-				}
-				return window.location.href.substring(0,beginIndex);
-			}
-		</script><div id="Menu" style="height: 64px;background-color: #B0D282; top: 0%; width: 100%;left: 0%;position:fixed; 
-		box-shadow:0px -6px 6px 6px rgba(0,0,0,0.5); z-index: 3; overflow-x: auto; overflow-y: hidden; white-space: nowrap; transition: 0.25s cubic-bezier(0, 0, 0, 1);">
-			<a  style="height: 64px; float: left; margin-top: 0px;" href="javascript:void(0)" onclick="window.location.href=getRoot();">
-				<img id="Img" style="height: 36px; margin-top: 15px; margin-left: 14px; display: flex; align-items: center; justify-items: center;"/>
-			</a>
-			<div class="menu-operator" style="float: none; justify-content: left; width: auto; width: fit-content; float: right; display: none;" onclick="expandMenu();" id="MenuExplander">
-				<div class="material-icons" style="font-size: 36px;-moz-transform: translateY(2px);">menu</div>
-			</div>
-			<div id="MenuFloat" style="float: right; width: fit-content;">
-				<div id="MenuContent">
-					<div>
-						<a href="https://space.bilibili.com/196422792" class="menu">
-							创作展示
-						</a>
-						<a href="javascript:void(0)" class="menu" onclick="window.location.href=getRoot()+'/Talk';">
-							讨论中心
-						</a>
-						<a href="javascript:void(0)" class="menu" onclick="window.location.href=getRoot()+'/WhyFirefox.html';">
-							为什么用火狐
-						</a>
-						<a href="javascript:void(0)" class="menu" onclick="window.location.href=getRoot()+'/WhyQuark.html';">
-							为什么用夸克
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div id="MenuSideBack" style="top: 0px; left: 0px; right: 0px; bottom: 0px; position: fixed;background-color: rgba(0,0,0,0.5); z-index: 4; transition: opacity 0.25s cubic-bezier(0,0,0,1); visibility: hidden; opacity: 0;" onclick="expandMenu();"></div>
-		<div id="MenuSide" style="float: right; position:fixed; background-color: #B0D282; box-shadow: 6px 0px 6px 6px rgba(0,0,0,0.5);z-index:6; right: 0px; top: 0px; bottom: 0px;visibility: hidden; overflow-y: auto; overflow-x: hidden; transform: translateX(100%);">
-			<div class="menu-operator" style="float: none; justify-content: left; width: auto;" id="MenuBack" onclick="expandMenu();">
-				<div class="material-icons" style="font-size: 36px;-moz-transform: translateY(2px);">arrow_back</div>
+		}
+		return window.location.href.substring(0,beginIndex);
+	}
+</script><div id="Menu" style="height: 64px;background-color: #B0D282; top: 0%; width: 100%;left: 0%;position:fixed; 
+box-shadow:0px -6px 6px 6px rgba(0,0,0,0.5); z-index: 3; overflow-x: auto; overflow-y: hidden; white-space: nowrap; transition: 0.25s cubic-bezier(0, 0, 0, 1);">
+	<a  style="height: 64px; float: left; margin-top: 0px;" href="javascript:void(0)" onclick="window.location.href=getRoot();">
+		<img id="Img" style="height: 36px; margin-top: 15px; margin-left: 14px; display: flex; align-items: center; justify-items: center;"/>
+	</a>
+	<div class="menu-operator" style="float: none; justify-content: left; width: auto; width: fit-content; float: right; display: none;" onclick="expandMenu();" id="MenuExplander">
+		<div class="material-icons" style="font-size: 36px;-moz-transform: translateY(2px);">menu</div>
+	</div>
+	<div id="MenuFloat" style="float: right; width: fit-content;">
+		<div id="MenuContent">
+			<div>
+				<a href="https://space.bilibili.com/196422792" class="menu">
+					创作展示
+				</a>
+				<a href="javascript:void(0)" class="menu" onclick="window.location.href=getRoot()+'/Talk';">
+					讨论中心
+				</a>
+				<a href="javascript:void(0)" class="menu" onclick="window.location.href=getRoot()+'/WhyFirefox.html';">
+					为什么用火狐
+				</a>
+				<a href="javascript:void(0)" class="menu" onclick="window.location.href=getRoot()+'/WhyQuark.html';">
+					为什么用夸克
+				</a>
 			</div>
 		</div>
-		<div id="ReturnToTop" class="rtt" style="position: fixed; z-index: 5; border-radius: 100%; height: 32px; width: 32px; right: 16px; bottom: 32px;visibility: hidden; transition: cubic-bezier(0,0,0,1) 0.25s; transform: translateY(calc(100% + 32px)); opacity: 0;" onclick="topClick()">
-			<div class="material-icons" style="font-size: 32px; -moz-transform:translateY(2px); ">
-				arrow_upward
-			</div>
-		</div>
-		<div style="height: 68px;"></div>
-		<div class="res" id="res" style=
-		"animation-name:mix-res;animation-duration: 0.5s;animation-play-state: paused;">
-			<div class="res-content" id="res-content" 
-				style="animation-name:mixdiv; animation-duration: 0.5s; animation-play-state: paused; height: 100%;
-				width:640px; max-width: 100%;">
-				<a href="javascript:window.history.back()">...</a><a href="javascript:void(0)" onclick="getPath('1')"><p></p>1</a>
+	</div>
+</div>
+<div id="MenuSideBack" style="top: 0px; left: 0px; right: 0px; bottom: 0px; position: fixed;background-color: rgba(0,0,0,0.5); z-index: 4; transition: opacity 0.25s cubic-bezier(0,0,0,1); visibility: hidden; opacity: 0;" onclick="expandMenu();"></div>
+<div id="MenuSide" style="float: right; position:fixed; background-color: #B0D282; box-shadow: 6px 0px 6px 6px rgba(0,0,0,0.5);z-index:6; right: 0px; top: 0px; bottom: 0px;visibility: hidden; overflow-y: auto; overflow-x: hidden; transform: translateX(100%);">
+	<div class="menu-operator" style="float: none; justify-content: left; width: auto;" id="MenuBack" onclick="expandMenu();">
+		<div class="material-icons" style="font-size: 36px;-moz-transform: translateY(2px);">arrow_back</div>
+	</div>
+</div>
+<div id="ReturnToTop" class="rtt" style="position: fixed; z-index: 5; border-radius: 100%; height: 32px; width: 32px; right: 16px; bottom: 32px;visibility: hidden; transition: cubic-bezier(0,0,0,1) 0.25s; transform: translateY(calc(100% + 32px)); opacity: 0;" onclick="topClick()">
+	<div class="material-icons" style="font-size: 32px; -moz-transform:translateY(2px); ">
+		arrow_upward
+	</div>
+</div>
+<div style="height: 68px;"></div>
+<div class="res" id="res" style=
+"animation-name:mix-res;animation-duration: 0.5s;animation-play-state: paused;">
+	<div class="res-content" id="res-content" 
+		style="animation-name:mixdiv; animation-duration: 0.5s; animation-play-state: paused; height: 100%;
+		width:640px; max-width: 100%;">
+		<a href="javascript:window.history.back()">...</a><a href="javascript:void(0)" onclick="getPath('1')"><p></p>1</a>
 <a href="javascript:void(0)" onclick="getPath('2')"><p></p>2</a>
 <a href="javascript:void(0)" onclick="getPath('3')"><p></p>3</a>
 <a href="javascript:void(0)" onclick="getPath('4')"><p></p>4</a>

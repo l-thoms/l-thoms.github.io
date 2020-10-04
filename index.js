@@ -91,13 +91,14 @@ function resize()
 	document.getElementById("Menu").style.visibility="";
 	document.getElementById("Menu").style.pointerEvents="";
 	var scrollstate = 0,uscrollstate=0;
-	if(Scroll!=document.documentElement.scrollTop)
-		Scroll<document.documentElement.scrollTop?scrollstate=1:scrollstate=-1;
+	if(Scroll!=window.scrollY)
+		Scroll<window.scrollY?scrollstate=1:scrollstate=-1;
 	else
 		scrollstate = 0;
+	if(window.navigator.userAgent.toLowerCase().indexOf("edge")>1)document.getElementById("Menu").style.transition="";
 	if(uscrollstate!=scrollstate)
 	{
-		if(Scroll<document.documentElement.scrollTop)
+		if(Scroll<window.scrollY)
 		{
 			document.getElementById("Menu").style.transform = "scale(0.75) translateX(calc(-100% / 6)) translateY(calc(-16px * 0.75))";
 			document.getElementById("Menu").style.width = "calc(100% / 0.75)";
@@ -117,7 +118,7 @@ function resize()
 			document.getElementById("ReturnToTop").style.transform="translateY(calc(100% + 32px))";
 		}
 	}
-	Scroll = document.documentElement.scrollTop;
+	Scroll = window.scrollY;
 	uscrollstate = scrollstate;
 	document.getElementById("GlassEffect").innerHTML= ".res::before,.rtt::before{background-image:url('./Resources/Background/"+Order.toString()+"'); background-color:#FFFFFF;"+
 	"filter:blur("+(document.getElementById("res").clientWidth/640*12).toString()+"px) saturate(2);}";
