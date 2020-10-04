@@ -20,6 +20,7 @@
 	animation-name:mix-before;
 	animation-duration: 0.5s;
 	animation-play-state:paused;
+	right:-12px;bottom:-12px;
 }
 .res::after,.rtt::after
 {

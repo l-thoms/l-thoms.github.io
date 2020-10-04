@@ -13,6 +13,7 @@ var Scroll = 0;
 var MenuItems;
 var Width=0;
 var Order;
+var hashed = false;
 function load()
 {
 	request();
@@ -56,7 +57,7 @@ function resize()
 	var r=document.getElementById('res');//调整亚克力效果
 	var autosizeText = ".res::before{"+
 	"top:"+-(r.offsetTop/r.offsetHeight*100).toString()+"%;"+
-	"left:"+-(r.offsetLeft/r.offsetWidth*100).toString()+"%;right:0%;bottom:0%;"+
+	"left:"+-(r.offsetLeft/r.offsetWidth*100).toString()+"%;"+
 	"background-repeat: no-repeat;background-size: cover;background-attachment:fixed;background-position: center;}";
 	document.getElementById("AutoSize").innerHTML=autosizeText;
 	document.getElementById("AutoSize").innerHTML+=autosizeText.replace("res::","rtt::");
@@ -87,6 +88,8 @@ function resize()
 		closeMenu();
 	}
 
+	document.getElementById("Menu").style.visibility="";
+	document.getElementById("Menu").style.pointerEvents="";
 	var scrollstate = 0,uscrollstate=0;
 	if(Scroll!=document.documentElement.scrollTop)
 		Scroll<document.documentElement.scrollTop?scrollstate=1:scrollstate=-1;
@@ -159,7 +162,7 @@ var ResizeClock = setInterval(function(){
 },0);
 function topClick()
 {
-	window.scrollTo(0,0);
+	window.location.href = "#";
 }
 function ready()//文档状态
 {
