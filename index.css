@@ -7,15 +7,18 @@
 	background:rgba(240, 240, 240, 0.75);
 	box-shadow:2px 2px 18px 0px rgba(0,0,0,0.3);
 	border-radius: 2px;
-	padding: 12px;
 	max-width: calc(100% - 30px);
 	overflow: hidden;
+}
+.res
+{
+	padding: 12px 12px 12px 13px;
 }
 .res::before,.rtt::before
 {
 	content:'';
 	position:absolute;
-	filter:blur(12px) saturate(2) ;
+	filter:blur(12px);
 	z-index: -2;
 	animation-name:mix-before;
 	animation-duration: 0.5s;

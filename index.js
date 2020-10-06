@@ -125,7 +125,7 @@ function resize()
 	Scroll = window.scrollY;
 	uscrollstate = scrollstate;
 	document.getElementById("GlassEffect").innerHTML= ".res::before,.rtt::before{background-image:url('./Resources/Background/"+Order.toString()+"'); background-color:#FFFFFF;"+
-	"filter:blur("+(document.getElementById("res").clientWidth/640*12).toString()+"px) saturate(2);}";
+	"filter:blur("+(document.getElementById("res").clientWidth/640*12).toString()+"px)}";
 }
 var IsExpanded = false;
 function closeMenu()

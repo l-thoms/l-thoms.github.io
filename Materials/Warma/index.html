@@ -27,9 +27,12 @@
 				background:rgba(240, 240, 240, 0.75);
 				box-shadow:2px 2px 18px 0px rgba(0,0,0,0.3);
 				border-radius: 2px;
-				padding: 12px;
 				max-width: calc(100% - 30px);
 				overflow: hidden;
+			}
+			.res
+			{
+				padding: 12px 12px 12px 13px;
 			}
 			.res::before,.rtt::before
 			{
@@ -379,9 +382,9 @@ function load()
 		<div class="material-icons" style="font-size: 36px;-moz-transform: translateY(2px);">arrow_back</div>
 	</div>
 </div>
-<div id="ReturnToTop" class="rtt" style="position: fixed; z-index: 5; border-radius: 100%; height: 32px; width: 32px; right: 16px; bottom: 32px;visibility: hidden; transition: cubic-bezier(0,0,0,1) 0.25s; transform: translateY(calc(100% + 32px)); opacity: 0;" onclick="topClick()">
-	<div class="material-icons" style="font-size: 32px; -moz-transform:translateY(2px); ">
-		arrow_upward
+<div id="ReturnToTop" class="rtt" style="position: fixed; z-index: 5; border-radius: 100%; height: 48px; width: 48px; right: 16px; bottom: 32px;visibility: hidden; transition:0.25s cubic-bezier(0,0,0,1); transform: translateY(calc(100% + 32px)); opacity: 0;" onclick="topClick()">
+	<div class="material-icons" style="font-size: 32px; left: 50%; top: 50%; transform: translate(-50%,-50%); position:relative;">
+		<div style="-moz-transform: translateY(2px);">arrow_upward</div>
 	</div>
 </div>
 <div style="height: 68px;"></div>
