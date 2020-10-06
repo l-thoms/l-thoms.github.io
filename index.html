@@ -22,29 +22,31 @@
 		<!--JS FILE-->
 		<script src="index.js"></script>
 		<!--CONTENT-->
-			<div id="Menu" style="height: 64px;background-color: #B0D282; top: 0%; left: 0%;position:fixed; top: 0%; left:0%;z-index: 3; width: 100%;
-				box-shadow:0px -6px 6px 6px rgba(0,0,0,0.5);  white-space: nowrap; transition: 0.25s cubic-bezier(0,0,0,1);min-width:100%;">
-			<a  style="height: 64px; float: left; margin-top: 0px;" href="">
+		<div id="Menu" style="height: 64px;background-color: #B0D282; top: 0%; left: 0%;position:fixed; top: 0%; left:0%;z-index: 3; width: 100%;
+		box-shadow:0px -6px 6px 6px rgba(0,0,0,0.5);  white-space: nowrap; transition: 0.25s cubic-bezier(0,0,0,1);min-width:100%;">
+			<a id="Home" style="height: 64px; float: left; margin-top: 0px; transform-origin: 0% 0%; transition: 0.25s cubic-bezier(0,0,0,1);" href="">
 				<img id="Img" style="height: 36px; margin-top: 15px; margin-left: 14px; display: flex; align-items: center; justify-items: center;" src="./Resources/Thoms2.svg"/>
 			</a>
-			<div class="menu-operator" style="float: none; justify-content: left; width: auto; width: fit-content; float: right; display: none;" onclick="expandMenu();" id="MenuExplander">
+			<div class="menu-operator" style="justify-content: left; width: auto; width: fit-content; float: right; display: none; transform-origin: 100% 0%;" onclick="expandMenu();" id="MenuExplander">
 				<div class="material-icons" style="font-size: 36px;-moz-transform: translateY(2px);">menu</div>
 			</div>
-			<div id="MenuFloat" style="float: right; width: fit-content;">
-				<div id="MenuContent">
-					<div>
-						<a href="https://space.bilibili.com/196422792" class="menu">
-							创作展示
-						</a>
-						<a href="./Talk" class="menu">
-							讨论中心
-						</a>
-						<a href="./WhyFirefox.html" class="menu">
-							为什么用火狐
-						</a>
-						<a href="./WhyQuark.html" class="menu">
-							为什么用夸克
-						</a>
+			<div id="MenuScaler" style="transition: 0.25s cubic-bezier(0,0,0,1);transform-origin: 100% 0%;">
+				<div id="MenuFloat" style="float: right; width: fit-content;">
+					<div id="MenuContent">
+						<div>
+							<a href="https://space.bilibili.com/196422792" class="menu">
+								创作展示
+							</a>
+							<a href="./Talk" class="menu">
+								讨论中心
+							</a>
+							<a href="./WhyFirefox.html" class="menu">
+								为什么用火狐
+							</a>
+							<a href="./WhyQuark.html" class="menu">
+								为什么用夸克
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>

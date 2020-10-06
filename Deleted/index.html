@@ -159,7 +159,6 @@
 var Depth = 2;
 function load()
 	{
-		request();
 		document.getElementById("Img").src = getRoot()+"/Resources/Thoms2.svg";
 		document.getElementById("MaterialType").href = getRoot()+"/Resources/Material_Icons.css";
 		document.body.style.backgroundColor="#FFFFFF";
@@ -187,29 +186,14 @@ function load()
 			resize();
 		}
 	}
-	function request()
-	{
-		var url = location.search;
-		if(url.indexOf("?")!=-1)
-		{
-			var argument = url.substring(1);
-			switch(argument.toLowerCase())
-			{
-				case "surf":window.location.href="https://surf.jackbuehner.com";break;
-				case "fontviewer":window.location.href="./Resources/Fontviewer";break;
-				case "snake":window.location.href="./Resources/Snake.zip";break;
-				case "yueping":
-				case "jyutping":window.location.href="http://www.iso10646hk.net/jp/database/index.jsp";break;
-			}
-		}
-	}
 	window.onscroll = function(){resize();};
 	function resize()
 	{
 		if(document.body.clientWidth<Width+document.getElementById("Img").width)
 		{
 			document.getElementById("MenuFloat").style.float="";
-			document.getElementById("MenuSide").appendChild(document.getElementById("MenuFloat"));
+			if(document.getElementById("MenuFloat").parentElement!=document.getElementById("MenuSide"))
+				document.getElementById("MenuSide").appendChild(document.getElementById("MenuFloat"));
 			document.getElementById("MenuExplander").style.display="";
 			for(var i =0;i<document.getElementsByClassName("menu").length;i++)
 			{
@@ -221,7 +205,8 @@ function load()
 		else
 		{
 			document.getElementById("MenuFloat").style.float="right";
-			document.getElementById("Menu").appendChild(document.getElementById("MenuFloat"));
+			if(document.getElementById("MenuFloat").parentElement!=document.getElementById("MenuScaler"))
+				document.getElementById("MenuScaler").appendChild(document.getElementById("MenuFloat"));
 			document.getElementById("MenuExplander").style.display="none";
 			for(var i =0;i<document.getElementsByClassName("menu").length;i++)
 			{
@@ -242,16 +227,18 @@ function load()
 		{
 			if(Scroll<window.scrollY)
 			{
-				document.getElementById("Menu").style.transform = "scale(0.75) translateX(calc(-100% / 6)) translateY(calc(-16px * 0.75))";
-				document.getElementById("Menu").style.width = "calc(100% / 0.75)";
+				document.getElementById("Menu").style.height = "48px";
+				document.getElementById("Home").style.transform = document.getElementById("MenuScaler").style.transform = document.getElementById("MenuExplander").style.transform = 
+				"scale(0.75)";
 				document.getElementById("ReturnToTop").style.visibility = "visible";
 				document.getElementById("ReturnToTop").style.opacity = "1";
 				document.getElementById("ReturnToTop").style.transform="translateY(0px)";
 			}
 			else
 			{
-				document.getElementById("Menu").style.transform = "";
-				document.getElementById("Menu").style.width = "100%";
+				document.getElementById("Menu").style.height = "64px";
+				document.getElementById("Home").style.transform = document.getElementById("MenuScaler").style.transform = document.getElementById("MenuExplander").style.transform = 
+				"";				
 				document.getElementById("ReturnToTop").style.opacity = "0";
 				document.getElementById("ReturnToTop").ontransitionend = function(){
 					if(document.getElementById("ReturnToTop").style.opacity=="0")
@@ -355,33 +342,36 @@ function load()
 		}
 		return window.location.href.substring(0,beginIndex);
 	}
-</script><div id="Menu" style="height: 64px;background-color: #B0D282; top: 0%; width: 100%;left: 0%;position:fixed; 
-box-shadow:0px -6px 6px 6px rgba(0,0,0,0.5); z-index: 3; overflow-x: auto; overflow-y: hidden; white-space: nowrap; transition: 0.25s cubic-bezier(0, 0, 0, 1);">
-	<a  style="height: 64px; float: left; margin-top: 0px;" href="javascript:void(0)" onclick="window.location.href=getRoot();">
-		<img id="Img" style="height: 36px; margin-top: 15px; margin-left: 14px; display: flex; align-items: center; justify-items: center;"/>
-	</a>
-	<div class="menu-operator" style="float: none; justify-content: left; width: auto; width: fit-content; float: right; display: none;" onclick="expandMenu();" id="MenuExplander">
-		<div class="material-icons" style="font-size: 36px;-moz-transform: translateY(2px);">menu</div>
-	</div>
-	<div id="MenuFloat" style="float: right; width: fit-content;">
-		<div id="MenuContent">
-			<div>
-				<a href="https://space.bilibili.com/196422792" class="menu">
-					创作展示
-				</a>
-				<a href="javascript:void(0)" class="menu" onclick="window.location.href=getRoot()+'/Talk';">
-					讨论中心
-				</a>
-				<a href="javascript:void(0)" class="menu" onclick="window.location.href=getRoot()+'/WhyFirefox.html';">
-					为什么用火狐
-				</a>
-				<a href="javascript:void(0)" class="menu" onclick="window.location.href=getRoot()+'/WhyQuark.html';">
-					为什么用夸克
-				</a>
+</script>
+		<div id="Menu" style="height: 64px;background-color: #B0D282; top: 0%; left: 0%;position:fixed; top: 0%; left:0%;z-index: 3; width: 100%;
+		box-shadow:0px -6px 6px 6px rgba(0,0,0,0.5);  white-space: nowrap; transition: 0.25s cubic-bezier(0,0,0,1);min-width:100%;">
+			<a id="Home" style="height: 64px; float: left; margin-top: 0px; transform-origin: 0% 0%; transition: 0.25s cubic-bezier(0,0,0,1);" href="javascript:void(0)" onclick="window.location.href=getRoot();">
+				<img id="Img" style="height: 36px; margin-top: 15px; margin-left: 14px; display: flex; align-items: center; justify-items: center;"/>
+			</a>
+			<div class="menu-operator" style="justify-content: left; width: auto; width: fit-content; float: right; display: none; transform-origin: 100% 0%;" onclick="expandMenu();" id="MenuExplander">
+				<div class="material-icons" style="font-size: 36px;-moz-transform: translateY(2px);">menu</div>
+			</div>
+			<div id="MenuScaler" style="transition: 0.25s cubic-bezier(0,0,0,1);transform-origin: 100% 0%;">
+				<div id="MenuFloat" style="float: right; width: fit-content;">
+					<div id="MenuContent">
+						<div>
+							<a href="https://space.bilibili.com/196422792" class="menu">
+								创作展示
+							</a>
+							<a href="javascript:void(0)" class="menu" onclick="window.location.href=getRoot()+'/Talk';">
+								讨论中心
+							</a>
+							<a href="javascript:void(0)" class="menu" onclick="window.location.href=getRoot()+'/WhyFirefox.html';">
+								为什么用火狐
+							</a>
+							<a href="javascript:void(0)" class="menu" onclick="window.location.href=getRoot()+'/WhyQuark.html';">
+								为什么用夸克
+							</a>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
-</div>
 <div id="MenuSideBack" style="top: 0px; left: 0px; right: 0px; bottom: 0px; position: fixed;background-color: rgba(0,0,0,0.5); z-index: 4; transition: opacity 0.25s cubic-bezier(0,0,0,1); visibility: hidden; opacity: 0;" onclick="expandMenu();"></div>
 <div id="MenuSide" style="float: right; position:fixed; background-color: #B0D282; box-shadow: 6px 0px 6px 6px rgba(0,0,0,0.5);z-index:6; right: 0px; top: 0px; bottom: 0px;visibility: hidden; overflow-y: auto; overflow-x: hidden; transform: translateX(100%);">
 	<div class="menu-operator" style="float: none; justify-content: left; width: auto;" id="MenuBack" onclick="expandMenu();">

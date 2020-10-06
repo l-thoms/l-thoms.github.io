@@ -65,7 +65,8 @@ function resize()
 	if(document.body.clientWidth<Width+document.getElementById("Img").width)
 	{
 		document.getElementById("MenuFloat").style.float="";
-		document.getElementById("MenuSide").appendChild(document.getElementById("MenuFloat"));
+		if(document.getElementById("MenuFloat").parentElement!=document.getElementById("MenuSide"))
+			document.getElementById("MenuSide").appendChild(document.getElementById("MenuFloat"));
 		document.getElementById("MenuExplander").style.display="";
 		for(var i =0;i<document.getElementsByClassName("menu").length;i++)
 		{
@@ -77,7 +78,8 @@ function resize()
 	else
 	{
 		document.getElementById("MenuFloat").style.float="right";
-		document.getElementById("Menu").appendChild(document.getElementById("MenuFloat"));
+		if(document.getElementById("MenuFloat").parentElement!=document.getElementById("MenuScaler"))
+			document.getElementById("MenuScaler").appendChild(document.getElementById("MenuFloat"));
 		document.getElementById("MenuExplander").style.display="none";
 		for(var i =0;i<document.getElementsByClassName("menu").length;i++)
 		{
@@ -100,16 +102,18 @@ function resize()
 	{
 		if(Scroll<window.scrollY)
 		{
-			document.getElementById("Menu").style.transform = "scale(0.75) translateX(calc(-100% / 6)) translateY(calc(-16px * 0.75))";
-			document.getElementById("Menu").style.width = "calc(100% / 0.75)";
+			document.getElementById("Menu").style.height = "48px";
+			document.getElementById("Home").style.transform = document.getElementById("MenuScaler").style.transform = document.getElementById("MenuExplander").style.transform = 
+			"scale(0.75)";
 			document.getElementById("ReturnToTop").style.visibility = "visible";
 			document.getElementById("ReturnToTop").style.opacity = "1";
 			document.getElementById("ReturnToTop").style.transform="translateY(0px)";
 		}
 		else
 		{
-			document.getElementById("Menu").style.transform = "";
-			document.getElementById("Menu").style.width = "100%";
+			document.getElementById("Menu").style.height = "64px";
+			document.getElementById("Home").style.transform = document.getElementById("MenuScaler").style.transform = document.getElementById("MenuExplander").style.transform = 
+			"";
 			document.getElementById("ReturnToTop").style.opacity = "0";
 			document.getElementById("ReturnToTop").ontransitionend = function(){
 				if(document.getElementById("ReturnToTop").style.opacity=="0")
